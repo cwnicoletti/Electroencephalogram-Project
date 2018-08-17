@@ -24,11 +24,7 @@
  * increase in height by 2-3x when you close your eyes and relax
  * (you'll see it for a second or two after you open your eyes, before it
  * averages back down).
- * /
-/* One issue: when taking the FFT of the data, it seems as if
-the frequency bands have a bandwidth of 1.33 instead of 1, as 
-60Hz noise peaks out at band 45. This is worked around by using
-the scaleFreq parameter, which is used frequently. */
+
 import processing.serial.*;
 import ddf.minim.*;
 import ddf.minim.signals.*;
