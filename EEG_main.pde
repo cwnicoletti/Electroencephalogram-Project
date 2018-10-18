@@ -252,7 +252,6 @@ void drawSignalData() {
           
         // draw the actual frequency bars
         // retrieves amplitude of requested frequency band
-        println("FFT: " + (FFTheight - fft.getBand(i)/10));
         rect(FFTrectWidth*i, FFTheight, FFTrectWidth*(i+1), FFTheight - fft.getBand(i)/10);
       }
     }
