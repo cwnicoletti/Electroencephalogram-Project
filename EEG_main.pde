@@ -29,29 +29,29 @@
 the frequency bands have a bandwidth of 1.33 instead of 1, as 
 60Hz noise peaks out at band 45. This is worked around by using
 the scaleFreq parameter, which is used frequently. */
+
 //---------------------------------Imports-------------------------------------------------
 import processing.serial.*;
 import ddf.minim.*;
-import ddf.minim.signals.*;
 import ddf.minim.analysis.*;
 import ddf.minim.effects.*;
 
-//-------------------------Initilization of Variables--------------------------------------
+//-------------------------Initialization of Variables--------------------------------------
 // Important constants that may need to be changed.
-float timeScale = 50; //scales the amplitude of time-domain data, can be changed
+float timeScale = 50; // Scales the amplitude of time-domain data, can be changed
 static float normalScale = 50;
 static float alphaScale = 100;
-static int freqAvgScale = 50; //does same for averages of frequency data
+static int freqAvgScale = 50; // Does same for averages of frequency data
 static int alphaCenter = 12;
-static int alphaBandwidth = 2; //really bandwidth divided by 2
+static int alphaBandwidth = 2; // Actually bandwidth divided by 2
 static int betaCenter = 24;
 static int betaBandwidth = 2;
 static int NUM_CHANNELS = 2;
-int seconds = 2; //how many seconds of data to display / analyze at once
+int seconds = 2; // How many seconds of data to display / analyze at once
 int fRate = 60;
-int inBuffer = 4; //how many data points to take in at once, this*60 = sampling rate
+int inBuffer = 4; // How many data points to take in at once, this*60 = sampling rate
 float displayBuffer[][] = new float[NUM_CHANNELS][fRate*inBuffer*seconds];
-float timeLength = displayBuffer[0].length; //number of samples/sec in time 
+float timeLength = displayBuffer[0].length; // Number of samples/sec in time 
 
 // Variables used to store data functions/effects.
 Minim minim;
@@ -75,24 +75,23 @@ float scaleFreq = 1.33;
 float timeDomainAverage = 0;
 
 // Variables used to handle bad data
-int cutoffHeight = 200; //frequency height to throw out "bad data" for averaging after
+int cutoffHeight = 200; // Frequency height to throw out "bad data" for averaging after
 float absoluteCutoff = 1.5;
-boolean absoluteBadDataFlag; //data that is bad because it's way too far out of our desired range --
-                             // ex: shaking your head for a second
-boolean averageBadDataFlag;  //data that's bad because it spikes too far outside of the average for 
-                             //that second -- 
-                             // ex: blinking your eyes for a split second
+boolean absoluteBadDataFlag; // Data that is bad because it's way too far out of our desired range --
+                             //  ex: shaking your head for a second
+boolean averageBadDataFlag;  // Data that's bad because it spikes too far outside of the average for 
+                             // that second -- 
+                             //  ex: blinking your eyes for a split second
 
 // Constants used to create a running average of the data.
 float[][] averages;
-int averageLength = 200; //averages about the last 5 seconds worth of data
-int averageBins = 6; //we have 6 types of brain waves
+int averageLength = 200; // Averages about the last 5 seconds worth of data
+int averageBins = 6; // 6 types of brain waves
 int counter = 0;
-
 
 //--------------------------Functions------------------------------------------------------
 void setup() {
-  // initialize array of averages for running average calculation
+  // Initialize array of averages for running average calculation
   averages = new float[averageBins][averageLength];
   for (int i = 0; i < averageBins; i++) {
     for (int j = 0; j < averageLength; j++) {
@@ -100,12 +99,12 @@ void setup() {
     }
   }
   
-  // set some drawing parameters
+  // Set drawing parameters
   FFTheight = windowHeight - 200;
   
   surface.setSize(windowLength, windowHeight);
   
-  // initialize minim, as well as some filters
+  // Initialize minim, and filters
   minim = new Minim(this);
   minim.debugOn();
   notch = new NotchFilter(60, 10, 32768);
@@ -115,12 +114,12 @@ void setup() {
   alphaFilter = new BandPass(alphaCenter/scaleFreq,alphaBandwidth/scaleFreq,32768);
   in = minim.getLineIn(Minim.MONO, 8192*4);
   
-  // initialize values in array that will be used for input
+  // Initialize values in array that will be used for input
   for (int i = 0; i < 240; i++){
     timeSignal[i] = 0;
   }
   
-  // initialize FFT
+  // Initialize FFT
   fft = new FFT(256, 256);
   fft.window(FFT.HAMMING);
   rectMode(CORNERS);
@@ -137,15 +136,14 @@ void draw() {
   absoluteBadDataFlag = false;
   averageBadDataFlag = false;
 
-  background(0); // make sure the background color is black
+  background(0); // Make sure the background color is black
   stroke(255);   // and that time data is drawn in white
   
-  line(0,100,windowLength,100); // line separating time and frequency data
+  line(0,100,windowLength,100); // Line separating time and frequency data
   
   drawSignalData();
   
-  // check for spikes relative to other data
-  // timeDomainAverage: 
+  // Check for spikes relative to other data
   for (int i = 0; i < windowLength - 1; i++) {
     if (abs(in.left.get((i+1)*round(in.bufferSize()/windowLength))) > timeDomainAverage*4)
       averageBadDataFlag = true;
@@ -193,7 +191,7 @@ void drawSignalData() {
   for(int i = 0; i < windowLength - 1; i++) {
       stroke(255,255,255);
       
-      // data that fills our window is normalized to +-1, so we want to throw out
+      // Data that fills our window is normalized to +-1, so we want to throw out
       // sets that have data that exceed this by the factor absoluteCutoff
       if (abs(in.left.get(i*round(in.bufferSize()/windowLength)))*timeScale/normalScale > .95) {
           absoluteBadDataFlag = true;
@@ -205,62 +203,60 @@ void drawSignalData() {
       line(i, 50 + in.left.get(i*round(in.bufferSize()/windowLength))*timeScale, 
            i+1, 50 + in.left.get((i+1)*round(in.bufferSize()/windowLength))*timeScale);
       
-      // bufferSize: internal buffer size of the sound object
       timeDomainAverage += abs(in.left.get(i*round(in.bufferSize()/windowLength)));
       
       // Draw un-averaged frequency bands of signal.
       if (i < (windowLength - 1)/2) {
-        // set colors for each type of brain wave
+        // Set colors for each type of brain wave
           if (i <= round(3/scaleFreq)) {             
-            fill(0,0,250);        //delta
+            fill(0,0,250);        // Delta
             stroke(25,0,225);
           }
           if (i >= round(4/scaleFreq) && 
           i <= round((alphaCenter - alphaBandwidth)/scaleFreq)-1) {
-            fill(50,0,200);       //theta
+            fill(50,0,200);       // Theta
             stroke(75,0,175);
           }
           if (i >= round((alphaCenter - alphaBandwidth)/scaleFreq) && 
           i <= round((alphaCenter + alphaBandwidth)/scaleFreq)) {  
-            fill(100,0,150);      //alpha
+            fill(100,0,150);      // Alpha
             stroke(125,0,125);
           }
           if (i >= round((alphaCenter + alphaBandwidth)/scaleFreq)+1 && 
           i <= round((betaCenter-betaBandwidth)/scaleFreq)-1) { 
-            fill(150,0,100);      //low beta
+            fill(150,0,100);      // Low Beta
             stroke(175,0,75);
           }
           if (i >= round((betaCenter - betaBandwidth)/scaleFreq) && 
           i <= round((betaCenter + betaBandwidth)/scaleFreq)) { 
-            fill(200,0,50);       //midrange beta
+            fill(200,0,50);       // Midrange Beta
             stroke(225,0,25);
           }
           if (i >= round((betaCenter + betaBandwidth)/scaleFreq)+1 && 
           i <= round(30/scaleFreq)) { 
-            fill(250,0,0);        //high beta
+            fill(250,0,0);        // High Beta
             stroke(255,0,10);
           }
           if (i >= round(32/scaleFreq)) {
-            fill(240,240,240);    //rest of stuff, mainly noise
+            fill(240,240,240);    // Noise
             stroke(200,200,200);
           }
           if (i == round(60/scaleFreq)) {
-            fill(200,200,200);    //color 60 Hz a different tone of grey,
-            stroke(150,150,150);  //to see how much noise is in data
+            fill(200,200,200);    // Color 60 Hz a different tone of grey,
+            stroke(150,150,150);  // to see how much noise is in data
           }
           
-        // draw the actual frequency bars
-        // retrieves amplitude of requested frequency band
+        // Draw the actual frequency bars
         rect(FFTrectWidth*i, FFTheight, FFTrectWidth*(i+1), FFTheight - fft.getBand(i)/10);
       }
     }
-  //divide the average by how many time points we have
+  // Divide the average by how many time points we have
   timeDomainAverage = timeDomainAverage / (windowLength - 1);
 }
 
-//Give user textual information on data being thrown out and filters we have active.
+// Give user textual information on data being thrown out and filters we have active
 void displayText(){
-  //show user when data is being thrown out
+  // Show user when data is being thrown out
   text("absoluteBadDataFlag = " + absoluteBadDataFlag, windowLength - 200, 120);
   if (absoluteBadDataFlag == true)
   {
@@ -274,20 +270,20 @@ void displayText(){
     println(counter);
   }
 
-  //and when a filter is being applied to the data
+  // and when a filter is being applied to the data
   text("alpha filter is " + in.hasEffect(alphaFilter), windowLength - 200, 160);
   text("beta filter is " + in.hasEffect(betaFilter), windowLength - 200, 180);
 }
 
-//Compute and display averages for each brain wave for the past ~5 seconds.
+// Compute and display averages for each brain wave for the past ~5 seconds.
 void displayFreqAverages() {
-  //show averages of alpha, beta, etc. waves
+  // Show averages of alpha, beta, etc. waves
   for (int i = 0; i < 6; i++) {
-    float avg = 0; //raw data for amplitude of section of frequency
+    float avg = 0; // Raw data for amplitude of section of frequency
     int lowFreq = 0;
     int hiFreq = 0;
   
-    //Set custom frequency ranges to be averaged. 
+    // Set custom frequency ranges to be averaged. 
     if (i == 0) {
       lowFreq = 0;
       hiFreq = 3;
@@ -325,17 +321,17 @@ void displayFreqAverages() {
       stroke(255,0,10);
     }
     
-    //Convert frequencies we want to the actual FFT bands. Because of our
-    //FFT parameters, these happen to be equal (each band has a 1 Hz width).
+    // Convert frequencies we want to the actual FFT bands. Because of our
+    // FFT parameters, these happen to be equal (each band has a 1 Hz width).
     int lowBound = fft.freqToIndex(lowFreq);
     int hiBound = fft.freqToIndex(hiFreq);
     
-    //Scale the band number, because of the issue outlined at very beginning of
-    //program.
+    // Scale the band number, because of the issue outlined at very beginning of
+    // program.
     lowBound = round(lowBound/scaleFreq);
     hiBound = round(hiBound/scaleFreq);
     
-    // get average for frequencies in range
+    // Get average for frequencies in range
     for (int j = lowBound; j <= hiBound; j++) {
       avg += fft.getBand(j);
       }
@@ -348,24 +344,24 @@ void displayFreqAverages() {
       }
     }
     
-    // update our array for the moving average (only if our data is "good")
+    // Update array for the moving average (only if our data is "good")
     if (absoluteBadDataFlag == false && averageBadDataFlag == false) {
       averages[i][counter%averageLength] = avg;
     }
     
-    // calculate the running average for each frequency range
+    // Calculate the running average for each frequency range
     float sum = 0;
     for (int k = 0; k < averageLength; k++) {
       sum += averages[i][k];
     }
     sum = sum / averageLength;
       
-    // draw averaged/smoothed frequency ranges
+    // Draw averaged/smoothed frequency ranges
     rect(i*width/6, height, (i+1)*width/6, height - sum);
   }
 }
 
-// always close Minim audio classes when you are done with them
+// Always close Minim audio classes when you are done with them
 void stop() {
   in.close();
   minim.stop();
