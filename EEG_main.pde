@@ -124,7 +124,6 @@ void setup() {
   fft = new FFT(256, 256);
   fft.window(FFT.HAMMING);
   rectMode(CORNERS);
-  println(fft.getBandWidth() + "Hello!");
 }
 
 void draw() {
