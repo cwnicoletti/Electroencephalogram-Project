@@ -1,5 +1,5 @@
 /* Reading and Visualizing EEG Data
- * by Christian Henry.
+ * by Christian Henry
  
  * Reads in EEG data through the microphone input of the 
  * computer, then displays the signal in time, its frequency
@@ -8,13 +8,12 @@
  *
  * For reference, the frequency bars are ordered/classified as
  * follows:
- *
- * 1 - blue -------- delta
- * 2 - blue/purple - theta
- * 3 - purple ------ alpha 
- * 4 - purple/red -- low beta
- * 5 - dark red ---- mid beta
- * 6 - red --------- high beta
+ *   1 - blue -------- delta
+ *   2 - blue/purple - theta
+ *   3 - purple ------ alpha 
+ *   4 - purple/red -- low beta
+ *   5 - dark red ---- mid beta
+ *   6 - red --------- high beta
  * 
  * This sketch will measure all brain waves, from 0 - 30 Hz. It does
  * best, however, measuring alpha waves across the occipital lobe.
@@ -29,7 +28,6 @@
 the frequency bands have a bandwidth of 1.33 instead of 1, as 
 60Hz noise peaks out at band 45. This is worked around by using
 the scaleFreq parameter, which is used frequently. */
-
 //---------------------------------Imports-------------------------------------------------
 import processing.serial.*;
 import ddf.minim.*;
@@ -37,10 +35,9 @@ import ddf.minim.analysis.*;
 import ddf.minim.effects.*;
 
 //-------------------------Initialization of Variables--------------------------------------
-// Important constants that may need to be changed.
-float timeScale = 50; // Scales the amplitude of time-domain data, can be changed
+// Important constants that may need to be changed
+float timeScale = 50; // Scales the amplitude of time-domain data
 static float normalScale = 50;
-static float alphaScale = 100;
 static int freqAvgScale = 50; // Does same for averages of frequency data
 static int alphaCenter = 12;
 static int alphaBandwidth = 2; // Actually bandwidth divided by 2
@@ -65,7 +62,7 @@ LowPassFS lpFS;
 BandPass betaFilter;
 BandPass alphaFilter;
 
-// Constants mainly used for scaling the data to readable sizes.
+// Constants mainly used for scaling the data to readable sizes
 int windowLength = 840;
 int windowHeight = 500;
 int FFTheight;
@@ -185,71 +182,71 @@ public void shiftNtimes(float[] myArray, int numShifts) {
   }
 }
 
-// Draw the signal in time and frequency.
+// Draw the signal in time and frequency
 void drawSignalData() {
-  timeDomainAverage = 0;
-  for(int i = 0; i < windowLength - 1; i++) {
-      stroke(255,255,255);
-      
-      // Data that fills our window is normalized to +-1, so we want to throw out
-      // sets that have data that exceed this by the factor absoluteCutoff
-      if (abs(in.left.get(i*round(in.bufferSize()/windowLength)))*timeScale/normalScale > .95) {
-          absoluteBadDataFlag = true;
-          fill(250,250,250);
-          stroke(150,150,150);
-        }
+    timeDomainAverage = 0;
+    for(int i = 0; i < windowLength - 1; i++) {
+        stroke(255,255,255);
         
-      // Draw the time domain signal.
-      line(i, 50 + in.left.get(i*round(in.bufferSize()/windowLength))*timeScale, 
-           i+1, 50 + in.left.get((i+1)*round(in.bufferSize()/windowLength))*timeScale);
-      
-      timeDomainAverage += abs(in.left.get(i*round(in.bufferSize()/windowLength)));
-      
-      // Draw un-averaged frequency bands of signal.
-      if (i < (windowLength - 1)/2) {
-        // Set colors for each type of brain wave
-          if (i <= round(3/scaleFreq)) {             
-            fill(0,0,250);        // Delta
-            stroke(25,0,225);
-          }
-          if (i >= round(4/scaleFreq) && 
-          i <= round((alphaCenter - alphaBandwidth)/scaleFreq)-1) {
-            fill(50,0,200);       // Theta
-            stroke(75,0,175);
-          }
-          if (i >= round((alphaCenter - alphaBandwidth)/scaleFreq) && 
-          i <= round((alphaCenter + alphaBandwidth)/scaleFreq)) {  
-            fill(100,0,150);      // Alpha
-            stroke(125,0,125);
-          }
-          if (i >= round((alphaCenter + alphaBandwidth)/scaleFreq)+1 && 
-          i <= round((betaCenter-betaBandwidth)/scaleFreq)-1) { 
-            fill(150,0,100);      // Low Beta
-            stroke(175,0,75);
-          }
-          if (i >= round((betaCenter - betaBandwidth)/scaleFreq) && 
-          i <= round((betaCenter + betaBandwidth)/scaleFreq)) { 
-            fill(200,0,50);       // Midrange Beta
-            stroke(225,0,25);
-          }
-          if (i >= round((betaCenter + betaBandwidth)/scaleFreq)+1 && 
-          i <= round(30/scaleFreq)) { 
-            fill(250,0,0);        // High Beta
-            stroke(255,0,10);
-          }
-          if (i >= round(32/scaleFreq)) {
-            fill(240,240,240);    // Noise
-            stroke(200,200,200);
-          }
-          if (i == round(60/scaleFreq)) {
-            fill(200,200,200);    // Color 60 Hz a different tone of grey,
-            stroke(150,150,150);  // to see how much noise is in data
+        // Data that fills our window is normalized to +-1, so we want to throw out
+        // sets that have data that exceed this by the factor absoluteCutoff
+        if (abs(in.left.get(i*round(in.bufferSize()/windowLength)))*timeScale/normalScale > .95) {
+            absoluteBadDataFlag = true;
+            fill(250,250,250);
+            stroke(150,150,150);
           }
           
-        // Draw the actual frequency bars
-        rect(FFTrectWidth*i, FFTheight, FFTrectWidth*(i+1), FFTheight - fft.getBand(i)/10);
+        // Draw the time domain signal
+        line(i, 50 + in.left.get(i*round(in.bufferSize()/windowLength))*timeScale, 
+             i+1, 50 + in.left.get((i+1)*round(in.bufferSize()/windowLength))*timeScale);
+        
+        timeDomainAverage += abs(in.left.get(i*round(in.bufferSize()/windowLength)));
+        
+        // Draw un-averaged frequency bands of signal
+        if (i < (windowLength - 1)/2) {
+          // Set colors for each type of brain wave
+            if (i <= round(3/scaleFreq)) {             
+              fill(0,0,250);        // Delta
+              stroke(25,0,225);
+            }
+            if (i >= round(4/scaleFreq) && 
+            i <= round((alphaCenter - alphaBandwidth)/scaleFreq)-1) {
+              fill(50,0,200);       // Theta
+              stroke(75,0,175);
+            }
+            if (i >= round((alphaCenter - alphaBandwidth)/scaleFreq) && 
+            i <= round((alphaCenter + alphaBandwidth)/scaleFreq)) {  
+              fill(100,0,150);      // Alpha
+              stroke(125,0,125);
+            }
+            if (i >= round((alphaCenter + alphaBandwidth)/scaleFreq)+1 && 
+            i <= round((betaCenter-betaBandwidth)/scaleFreq)-1) { 
+              fill(150,0,100);      // Low Beta
+              stroke(175,0,75);
+            }
+            if (i >= round((betaCenter - betaBandwidth)/scaleFreq) && 
+            i <= round((betaCenter + betaBandwidth)/scaleFreq)) { 
+              fill(200,0,50);       // Midrange Beta
+              stroke(225,0,25);
+            }
+            if (i >= round((betaCenter + betaBandwidth)/scaleFreq)+1 && 
+            i <= round(30/scaleFreq)) { 
+              fill(250,0,0);        // High Beta
+              stroke(255,0,10);
+            }
+            if (i >= round(32/scaleFreq)) {
+              fill(240,240,240);    // Noise
+              stroke(200,200,200);
+            }
+            if (i == round(60/scaleFreq)) {
+              fill(200,200,200);    // Color 60 Hz a different tone of grey,
+              stroke(150,150,150);  // to see how much noise is in data
+            }
+            
+          // Draw the actual frequency bars
+          rect(FFTrectWidth*i, FFTheight, FFTrectWidth*(i+1), FFTheight - fft.getBand(i)/10);
+        }
       }
-    }
   // Divide the average by how many time points we have
   timeDomainAverage = timeDomainAverage / (windowLength - 1);
 }
@@ -275,7 +272,7 @@ void displayText(){
   text("beta filter is " + in.hasEffect(betaFilter), windowLength - 200, 180);
 }
 
-// Compute and display averages for each brain wave for the past ~5 seconds.
+// Compute and display averages for each brain wave for the past ~5 seconds
 void displayFreqAverages() {
   // Show averages of alpha, beta, etc. waves
   for (int i = 0; i < 6; i++) {
@@ -283,7 +280,7 @@ void displayFreqAverages() {
     int lowFreq = 0;
     int hiFreq = 0;
   
-    // Set custom frequency ranges to be averaged. 
+    // Set custom frequency ranges to be averaged 
     if (i == 0) {
       lowFreq = 0;
       hiFreq = 3;
@@ -337,7 +334,7 @@ void displayFreqAverages() {
       }
     avg /= (hiBound - lowBound + 1);
     
-    // Scale the bars so that it fits our window a little better.
+    // Scale the bars so that it fits our window a little better
     for (int k = 0; k < 6; k++) {
       if (i == k) {
         avg *= scaling[i]*freqAvgScale;
