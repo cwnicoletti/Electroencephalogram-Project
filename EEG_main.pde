@@ -52,7 +52,7 @@ float timeLength = displayBuffer[0].length; // Number of samples/sec in time
 
 // Variables used to store data functions/effects.
 Minim minim;
-AudioInput in ;
+AudioInput in;
 Serial myPort;
 float[] timeSignal = new float[240];
 FFT fft;
@@ -115,7 +115,8 @@ void setup() {
     lpSP = new LowPassSP(40, 32768);
     lpFS = new LowPassFS(60, 32768);
     betaFilter = new BandPass(betaCenter / scaleFreq, betaBandwidth / scaleFreq, 32768);
-    alphaFilter = new BandPass(alphaCenter / scaleFreq, alphaBandwidth / scaleFreq, 32768); in = minim.getLineIn(Minim.MONO, 8192 * 4);
+    alphaFilter = new BandPass(alphaCenter / scaleFreq, alphaBandwidth / scaleFreq, 32768); 
+    in = minim.getLineIn(Minim.MONO, 8192 * 4);
 
     // Initialize values in array that will be used for input
     for (int i = 0; i < 240; i++) {
@@ -260,20 +261,20 @@ void drawSignalData() {
 // Give user textual information on data being thrown out and filters we have active
 void displayText() {
     // Show user when data is being thrown out
-    text("absoluteBadDataFlag = " + absoluteBadDataFlag, windowLength - 200, 120);
+    text("AbsoluteBadDataFlag = " + absoluteBadDataFlag, windowLength - 200, 120);
     if (absoluteBadDataFlag == true) {
-        println("absoluteBadDataFlag = " + absoluteBadDataFlag);
+        println("AbsoluteBadDataFlag = " + absoluteBadDataFlag);
         println(counter);
     }
-    text("averageBadDataFlag = " + averageBadDataFlag, windowLength - 200, 140);
+    text("AverageBadDataFlag = " + averageBadDataFlag, windowLength - 200, 140);
     if (averageBadDataFlag == true) {
-        println("averageBadDataFlag = " + averageBadDataFlag);
+        println("AverageBadDataFlag = " + averageBadDataFlag);
         println(counter);
     }
 
     // and when a filter is being applied to the data
-    text("alpha filter is " + in .hasEffect(alphaFilter), windowLength - 200, 160);
-    text("beta filter is " + in .hasEffect(betaFilter), windowLength - 200, 180);
+    text("Alpha filter is " + in.hasEffect(alphaFilter), windowLength - 200, 160);
+    text("Beta filter is " + in.hasEffect(betaFilter), windowLength - 200, 180);
 }
 
 // Compute and display averages for each brain wave for the past ~5 seconds
