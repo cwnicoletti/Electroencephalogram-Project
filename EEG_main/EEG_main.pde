@@ -199,64 +199,64 @@ void drawSignalData() {
     for (int i = 0; i < windowWidth - 1; i++) {
         stroke(255, 255, 255);
 
-    // Data that fills our window is normalized to +-1, so we want to throw out
-    // sets that have data that exceed this by the factor absoluteCutoff
-    if (abs( in .left.get(i * round( in .bufferSize() / windowWidth))) * timeScale / normalScale > .95) {
-        absoluteBadDataFlag = true;
-        fill(250, 250, 250);
-        stroke(150, 150, 150);
-    }
-
-    // Draw the time domain signal
-    line(i, 50 + in .left.get(i * round( in .bufferSize() / windowWidth)) * timeScale,
-    i + 1, 50 + in .left.get((i + 1) * round( in .bufferSize() / windowWidth)) * timeScale);
-
-    timeDomainAverage += abs( in .left.get(i * round( in .bufferSize() / windowWidth)));
-
-    // Draw un-averaged frequency bands of signal
-    if (i < (windowWidth - 1) / 2) {
-        // Set colors for each type of brain wave
-        if (i <= round(3 / scaleFreq)) {
-            fill(0, 0, 250); // Delta
-            stroke(25, 0, 225);
+        // Data that fills our window is normalized to +-1, so we want to throw out
+        // sets that have data that exceed this by the factor absoluteCutoff
+        if (abs( in .left.get(i * round( in .bufferSize() / windowWidth))) * timeScale / normalScale > .95) {
+            absoluteBadDataFlag = true;
+            fill(250, 250, 250);
+            stroke(150, 150, 150);
         }
-        if (i >= round(4 / scaleFreq) &&
-        i <= round((alphaCenter - alphaBandwidth) / scaleFreq) - 1) {
-            fill(50, 0, 200); // Theta
-            stroke(75, 0, 175);
+    
+        // Draw the time domain signal
+        line(i, 50 + in .left.get(i * round( in .bufferSize() / windowWidth)) * timeScale,
+        i + 1, 50 + in .left.get((i + 1) * round( in .bufferSize() / windowWidth)) * timeScale);
+        
+        timeDomainAverage += abs( in .left.get(i * round( in .bufferSize() / windowWidth)));
+    
+        // Draw un-averaged frequency bands of signal
+        if (i < (windowWidth - 1) / 2) {
+            // Set colors for each type of brain wave
+            if (i <= round(3 / scaleFreq)) {
+                fill(0, 0, 250); // Delta
+                stroke(25, 0, 225);
+            }
+            if (i >= round(4 / scaleFreq) &&
+            i <= round((alphaCenter - alphaBandwidth) / scaleFreq) - 1) {
+                fill(50, 0, 200); // Theta
+                stroke(75, 0, 175);
+            }
+            if (i >= round((alphaCenter - alphaBandwidth) / scaleFreq) &&
+            i <= round((alphaCenter + alphaBandwidth) / scaleFreq)) {
+                fill(100, 0, 150); // Alpha
+                stroke(125, 0, 125);
+            }
+            if (i >= round((alphaCenter + alphaBandwidth) / scaleFreq) + 1 &&
+            i <= round((betaCenter - betaBandwidth) / scaleFreq) - 1) {
+                fill(150, 0, 100); // Low Beta
+                stroke(175, 0, 75);
+            }
+            if (i >= round((betaCenter - betaBandwidth) / scaleFreq) &&
+            i <= round((betaCenter + betaBandwidth) / scaleFreq)) {
+                fill(200, 0, 50); // Midrange Beta
+                stroke(225, 0, 25);
+            }
+            if (i >= round((betaCenter + betaBandwidth) / scaleFreq) + 1 &&
+            i <= round(30 / scaleFreq)) {
+                fill(250, 0, 0); // High Beta
+                stroke(255, 0, 10);
+            }
+            if (i >= round(32 / scaleFreq)) {
+                fill(240, 240, 240); // Noise
+                stroke(200, 200, 200);
+            }
+            if (i == round(60 / scaleFreq)) {
+                fill(200, 200, 200); // Color 60 Hz a different tone of grey,
+                stroke(150, 150, 150); // to see how much noise is in data
+            }
+    
+        // Draw the actual frequency bars
+        rect(FFTrectWidth * i, FFTheight, FFTrectWidth * (i + 1), FFTheight - fft.getBand(i) / 10);
         }
-        if (i >= round((alphaCenter - alphaBandwidth) / scaleFreq) &&
-        i <= round((alphaCenter + alphaBandwidth) / scaleFreq)) {
-            fill(100, 0, 150); // Alpha
-            stroke(125, 0, 125);
-        }
-        if (i >= round((alphaCenter + alphaBandwidth) / scaleFreq) + 1 &&
-        i <= round((betaCenter - betaBandwidth) / scaleFreq) - 1) {
-            fill(150, 0, 100); // Low Beta
-            stroke(175, 0, 75);
-        }
-        if (i >= round((betaCenter - betaBandwidth) / scaleFreq) &&
-        i <= round((betaCenter + betaBandwidth) / scaleFreq)) {
-            fill(200, 0, 50); // Midrange Beta
-            stroke(225, 0, 25);
-        }
-        if (i >= round((betaCenter + betaBandwidth) / scaleFreq) + 1 &&
-        i <= round(30 / scaleFreq)) {
-            fill(250, 0, 0); // High Beta
-            stroke(255, 0, 10);
-        }
-        if (i >= round(32 / scaleFreq)) {
-            fill(240, 240, 240); // Noise
-            stroke(200, 200, 200);
-        }
-        if (i == round(60 / scaleFreq)) {
-            fill(200, 200, 200); // Color 60 Hz a different tone of grey,
-            stroke(150, 150, 150); // to see how much noise is in data
-        }
-
-    // Draw the actual frequency bars
-    rect(FFTrectWidth * i, FFTheight, FFTrectWidth * (i + 1), FFTheight - fft.getBand(i) / 10);
-    }
     }
     // Divide the average by how many time points we have
     timeDomainAverage = timeDomainAverage / (windowWidth - 1);
