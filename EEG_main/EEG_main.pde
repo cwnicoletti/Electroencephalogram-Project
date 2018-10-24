@@ -209,40 +209,40 @@ void drawSignalData() {
         line(i, 50 + in .left.get(i * round( in .bufferSize() / windowWidth)) * timeScale,
         i + 1, 50 + in .left.get((i + 1) * round( in .bufferSize() / windowWidth)) * timeScale);
         
-        // Adding to the time domain the power spectrum of the audioInput at i
+        // Adding to the time domain average the power spectrum of the audioInput at i
         timeDomainAverage += abs( in .left.get(i * round( in .bufferSize() / windowWidth)));
     
         // Draw un-averaged frequency bands of signal
         if (i < (windowWidth - 1) / 2) {
             // Set colors for each type of brain wave
             if (i <= round(3 / scaleFreq)) {
-                fill(0, 0, 250); // Delta
-                stroke(25, 0, 225);
+                fill(250, 0, 0); // Delta (Red)
+                stroke(255, 0, 10);
             }
             if (i >= round(4 / scaleFreq) &&
             i <= round((alphaCenter - alphaBandwidth) / scaleFreq) - 1) {
-                fill(50, 0, 200); // Theta
-                stroke(75, 0, 175);
+                fill(200, 0, 50); // Theta
+                stroke(225, 0, 25);
             }
             if (i >= round((alphaCenter - alphaBandwidth) / scaleFreq) &&
             i <= round((alphaCenter + alphaBandwidth) / scaleFreq)) {
-                fill(100, 0, 150); // Alpha
-                stroke(125, 0, 125);
+                fill(150, 0, 100); // Alpha
+                stroke(175, 0, 75);
             }
             if (i >= round((alphaCenter + alphaBandwidth) / scaleFreq) + 1 &&
             i <= round((betaCenter - betaBandwidth) / scaleFreq) - 1) {
-                fill(150, 0, 100); // Low Beta
-                stroke(175, 0, 75);
+                fill(100, 0, 150); // Low Beta
+                stroke(125, 0, 125);
             }
             if (i >= round((betaCenter - betaBandwidth) / scaleFreq) &&
             i <= round((betaCenter + betaBandwidth) / scaleFreq)) {
-                fill(200, 0, 50); // Midrange Beta
-                stroke(225, 0, 25);
+                fill(50, 0, 200); // Midrange Beta
+                stroke(75, 0, 175);
             }
             if (i >= round((betaCenter + betaBandwidth) / scaleFreq) + 1 &&
             i <= round(30 / scaleFreq)) {
-                fill(250, 0, 0); // High Beta
-                stroke(255, 0, 10);
+                fill(0, 0, 250); // High Beta (Purple)
+                stroke(25, 0, 225);
             }
             if (i >= round(32 / scaleFreq)) {
                 fill(240, 240, 240); // Noise
