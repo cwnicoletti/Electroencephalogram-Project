@@ -35,7 +35,6 @@ import ddf.minim.analysis.*;
 import ddf.minim.effects.*;
 
 //-------------------------Initialization of Variables--------------------------------------
-// Important constants that may need to be changed
 float timeScale = 50; // Scales the amplitude of time-domain data
 static float normalScale = 50;
 static int freqAvgScale = 50; // Does same for averages of frequency data
@@ -81,10 +80,10 @@ float timeDomainAverage = 0;
 // Variables used to handle bad data
 int cutoffHeight = 200; // Frequency height to throw out "bad data" for averaging after
 float absoluteCutoff = 1.5;
-boolean absoluteBadDataFlag; // Data that is bad because it's way too far out of our desired range --
+boolean absoluteBadDataFlag; //  Data that is bad because it's way too far out of our desired range --
                              //  ex: shaking your head for a second
-boolean averageBadDataFlag; // Data that's bad because it spikes too far outside of the average for 
-                            // that second -- 
+boolean averageBadDataFlag; //  Data that's bad because it spikes too far outside of the average for 
+                            //  that second -- 
                             //  ex: blinking your eyes for a split second
 
 // Constants used to create a running average of the data.
@@ -195,9 +194,8 @@ public void shiftNtimes(float[] myArray, int numShifts) {
 
 // Draw the signal in time and frequency
 void drawSignalData() {
-    timeDomainAverage = 0;
     for (int i = 0; i < windowWidth - 1; i++) {
-        stroke(255, 255, 255);
+        stroke(255, 255, 255); // Draw signal frequency in white
 
         // Data that fills our window is normalized to +-1, so we want to throw out
         // sets that have data that exceed this by the factor absoluteCutoff
@@ -207,10 +205,11 @@ void drawSignalData() {
             stroke(150, 150, 150);
         }
     
-        // Draw the time domain signal
+        // Draw the time domain signal (x1, y1, x2, y2)
         line(i, 50 + in .left.get(i * round( in .bufferSize() / windowWidth)) * timeScale,
         i + 1, 50 + in .left.get((i + 1) * round( in .bufferSize() / windowWidth)) * timeScale);
         
+        // Adding to the time domain the power spectrum of the audioInput at i
         timeDomainAverage += abs( in .left.get(i * round( in .bufferSize() / windowWidth)));
     
         // Draw un-averaged frequency bands of signal
