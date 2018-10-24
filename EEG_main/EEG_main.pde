@@ -95,12 +95,17 @@ int counter = 0;
 
 //--------------------------Functions------------------------------------------------------
 void setup() {
-    // Initialize array of averages for running average calculation
+    // Initialize 2D array of averages for running average calculation
     averages = new float[averageBins][averageLength];
     for (int i = 0; i < averageBins; i++) {
         for (int j = 0; j < averageLength; j++) {
             averages[i][j] = 0;
         }
+    }
+    
+    // Initialize array used for input
+    for (int i = 0; i < 240; i++) {
+        timeSignal[i] = 0;
     }
 
     // Set drawing parameters
@@ -109,20 +114,17 @@ void setup() {
     // Setting size of window interface
     surface.setSize(windowWidth, windowHeight);
 
-    // Initialize minim, and filters
+    // Initialize minim and filters objects
     minim = new Minim(this);
-    minim.debugOn();
-    notch = new NotchFilter(60, 10, 32768);
     lpSP = new LowPassSP(40, 32768);
     lpFS = new LowPassFS(60, 32768);
+    notch = new NotchFilter(60, 10, 32768);
     betaFilter = new BandPass(betaCenter / scaleFreq, betaBandwidth / scaleFreq, 32768);
-    alphaFilter = new BandPass(alphaCenter / scaleFreq, alphaBandwidth / scaleFreq, 32768); 
-    in = minim.getLineIn(Minim.MONO, 8192 * 4);
-
-    // Initialize values in array that will be used for input
-    for (int i = 0; i < 240; i++) {
-        timeSignal[i] = 0;
-    }
+    alphaFilter = new BandPass(alphaCenter / scaleFreq, alphaBandwidth / scaleFreq, 32768);
+    
+    // Turn on debug messages and initialize LineIn specifications
+    minim.debugOn();
+    in = minim.getLineIn(Minim.MONO, 8192 * 4); 
 
     // Initialize FFT
     fft = new FFT(256, 256);
