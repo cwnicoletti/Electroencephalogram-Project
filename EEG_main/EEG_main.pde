@@ -79,7 +79,7 @@ float scaleFreq = 1.33f;
 float timeDomainAverage = 0;
 
 // Variables used to handle bad data
-int cutoffHeight = 0; // Frequency height to throw out "bad data" for averaging after
+int cutoffHeight = 200; // Frequency height to throw out "bad data" for averaging after
 float absoluteCutoff = 1.5;
 boolean absoluteBadDataFlag; // Data that is bad because it's way too far out of our desired range --
                              //  ex: shaking your head for a second
@@ -106,6 +106,7 @@ void setup() {
     // Set drawing parameters
     FFTheight = windowHeight - 200;
 
+    // Setting size of window interface
     surface.setSize(windowLength, windowHeight);
 
     // Initialize minim, and filters
