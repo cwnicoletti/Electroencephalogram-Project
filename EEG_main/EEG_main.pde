@@ -63,7 +63,7 @@ BandPass betaFilter;
 BandPass alphaFilter;
 
 // Constants mainly used for scaling the data to readable sizes
-int windowLength = 840;
+int windowWidth = 840;
 int windowHeight = 500;
 int FFTheight;
 float scaling[] = {
@@ -107,7 +107,7 @@ void setup() {
     FFTheight = windowHeight - 200;
 
     // Setting size of window interface
-    surface.setSize(windowLength, windowHeight);
+    surface.setSize(windowWidth, windowHeight);
 
     // Initialize minim, and filters
     minim = new Minim(this);
@@ -144,13 +144,13 @@ void draw() {
     background(0); // Make sure the background color is black
     stroke(255); // and that time data is drawn in white
 
-    line(0, 100, windowLength, 100); // Line separating time and frequency data
+    line(0, 100, windowWidth, 100); // Line separating time and frequency data
 
     drawSignalData();
 
     // Check for spikes relative to other data
-    for (int i = 0; i < windowLength - 1; i++) {
-        if (abs( in .left.get((i + 1) * round( in .bufferSize() / windowLength))) > timeDomainAverage * 4)
+    for (int i = 0; i < windowWidth - 1; i++) {
+        if (abs( in .left.get((i + 1) * round( in .bufferSize() / windowWidth))) > timeDomainAverage * 4)
             averageBadDataFlag = true;
     }
 
@@ -193,25 +193,25 @@ public void shiftNtimes(float[] myArray, int numShifts) {
 // Draw the signal in time and frequency
 void drawSignalData() {
     timeDomainAverage = 0;
-    for (int i = 0; i < windowLength - 1; i++) {
+    for (int i = 0; i < windowWidth - 1; i++) {
         stroke(255, 255, 255);
 
     // Data that fills our window is normalized to +-1, so we want to throw out
     // sets that have data that exceed this by the factor absoluteCutoff
-    if (abs( in .left.get(i * round( in .bufferSize() / windowLength))) * timeScale / normalScale > .95) {
+    if (abs( in .left.get(i * round( in .bufferSize() / windowWidth))) * timeScale / normalScale > .95) {
         absoluteBadDataFlag = true;
         fill(250, 250, 250);
         stroke(150, 150, 150);
     }
 
     // Draw the time domain signal
-    line(i, 50 + in .left.get(i * round( in .bufferSize() / windowLength)) * timeScale,
-    i + 1, 50 + in .left.get((i + 1) * round( in .bufferSize() / windowLength)) * timeScale);
+    line(i, 50 + in .left.get(i * round( in .bufferSize() / windowWidth)) * timeScale,
+    i + 1, 50 + in .left.get((i + 1) * round( in .bufferSize() / windowWidth)) * timeScale);
 
-    timeDomainAverage += abs( in .left.get(i * round( in .bufferSize() / windowLength)));
+    timeDomainAverage += abs( in .left.get(i * round( in .bufferSize() / windowWidth)));
 
     // Draw un-averaged frequency bands of signal
-    if (i < (windowLength - 1) / 2) {
+    if (i < (windowWidth - 1) / 2) {
         // Set colors for each type of brain wave
         if (i <= round(3 / scaleFreq)) {
             fill(0, 0, 250); // Delta
@@ -256,26 +256,26 @@ void drawSignalData() {
     }
     }
     // Divide the average by how many time points we have
-    timeDomainAverage = timeDomainAverage / (windowLength - 1);
+    timeDomainAverage = timeDomainAverage / (windowWidth - 1);
 }
 
 // Give user textual information on data being thrown out and filters we have active
 void displayText() {
     // Show user when data is being thrown out
-    text("AbsoluteBadDataFlag = " + absoluteBadDataFlag, windowLength - 200, 120);
+    text("AbsoluteBadDataFlag = " + absoluteBadDataFlag, windowWidth - 200, 120);
     if (absoluteBadDataFlag == true) {
         println("AbsoluteBadDataFlag = " + absoluteBadDataFlag);
         println(counter);
     }
-    text("AverageBadDataFlag = " + averageBadDataFlag, windowLength - 200, 140);
+    text("AverageBadDataFlag = " + averageBadDataFlag, windowWidth - 200, 140);
     if (averageBadDataFlag == true) {
         println("AverageBadDataFlag = " + averageBadDataFlag);
         println(counter);
     }
 
     // and when a filter is being applied to the data
-    text("Alpha filter is " + in.hasEffect(alphaFilter), windowLength - 200, 160);
-    text("Beta filter is " + in.hasEffect(betaFilter), windowLength - 200, 180);
+    text("Alpha filter is " + in.hasEffect(alphaFilter), windowWidth - 200, 160);
+    text("Beta filter is " + in.hasEffect(betaFilter), windowWidth - 200, 180);
 }
 
 // Compute and display averages for each brain wave for the past ~5 seconds
