@@ -114,7 +114,7 @@ void setup() {
     // Setting size of window interface
     surface.setSize(windowWidth, windowHeight);
 
-    // Initialize minim and filters objects
+    // Initialize minim and filter objects
     minim = new Minim(this);
     lpSP = new LowPassSP(40, 32768);
     lpFS = new LowPassFS(60, 32768);
@@ -152,8 +152,9 @@ void draw() {
 
     // Check for spikes relative to other data
     for (int i = 0; i < windowWidth - 1; i++) {
-        if (abs( in .left.get((i + 1) * round( in .bufferSize() / windowWidth))) > timeDomainAverage * 4)
+        if (abs( in .left.get((i + 1) * round( in .bufferSize() / windowWidth))) > timeDomainAverage * 4) {
             averageBadDataFlag = true;
+        }
     }
 
     displayText();
@@ -184,8 +185,8 @@ void serialEvent(Serial p) {
 public void shiftNtimes(float[] myArray, int numShifts) {
     int timesShifted = 0;
     while (timesShifted < numShifts) {
-        for (int j = 0; j < timeLength - 1; j++) {
-            myArray[j] = myArray[j + 1];
+        for (int i = 0; i < timeLength - 1; i++) {
+            myArray[i] = myArray[i + 1];
         }
     myArray[(int) timeLength - 1] = 0;
     timesShifted++;
