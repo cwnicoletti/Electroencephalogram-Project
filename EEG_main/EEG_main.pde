@@ -127,7 +127,7 @@ void setup() {
 
     // Initialize FFT
     fft = new FFT(256, 256);
-    fft.window(FFT.HAMMING);
+    fft.window(FFT.HAMMING); // Default: Hamming enabled
     rectMode(CORNERS);
 }
 
@@ -143,7 +143,7 @@ void draw() {
     averageBadDataFlag = false;
 
     background(0); // Make sure the background color is black
-    stroke(255); // and that time data is drawn in white
+    stroke(255); // Time data is drawn in white
 
     line(0, 100, windowWidth, 100); // Line separating time and frequency data
 
@@ -163,6 +163,7 @@ void draw() {
     counter++;
 }
 
+// Used for comparing the difference of hamming and lack of hamming
 void keyPressed() {
     if (key == 'w') {
         fft.window(FFT.HAMMING);
@@ -172,8 +173,9 @@ void keyPressed() {
     }
 }
 
+// While there are bytes to use, shift the timeSignal array backwards
 void serialEvent(Serial p) {
-    while (p.available() > 0) {
+    while (p.available() > 0) { // While bytes available
         shiftNtimes(timeSignal, 1);
     }
 }
