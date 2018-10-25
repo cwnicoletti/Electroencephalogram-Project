@@ -275,7 +275,7 @@ void displayText() {
         println(counter);
     }
 
-    // and when a filter is being applied to the data
+    // Show user when a filter is being applied to the data
     text("Alpha filter is " + in.hasEffect(alphaFilter), windowWidth - 200, 160);
     text("Beta filter is " + in.hasEffect(betaFilter), windowWidth - 200, 180);
 }
@@ -326,13 +326,12 @@ void displayFreqAverages() {
         stroke(255, 0, 10);
         }
     
-        // Convert frequencies we want to the actual FFT bands. Because of our
-        // FFT parameters, these happen to be equal (each band has a 1 Hz width).
+        // Convert frequencies to FFT bands. Because of our FFT parameters(256, 256),
+        // these are equal (each band has a 1 Hz width).
         int lowBound = fft.freqToIndex(lowFreq);
         int hiBound = fft.freqToIndex(hiFreq);
     
-        // Scale the band number, because of the issue outlined at very beginning of
-        // program.
+        // Scale the band number, issue outlined at beginning of program
         lowBound = round(lowBound / scaleFreq);
         hiBound = round(hiBound / scaleFreq);
     
@@ -342,7 +341,7 @@ void displayFreqAverages() {
         }
         avg /= (hiBound - lowBound + 1);
     
-        // Scale the bars so that it fits our window a little better
+        // Scale the bars so that it fits our window better
         for (int k = 0; k < 6; k++) {
             if (i == k) {
                 avg *= scaling[i] * freqAvgScale;
@@ -351,15 +350,15 @@ void displayFreqAverages() {
     
         // Update array for the moving average (only if our data is "good")
         if (absoluteBadDataFlag == false && averageBadDataFlag == false) {
-            averages[i][counter % averageLength] = avg;
+            averages[i][counter % averageLength] = avg; // Populate 2D averages array with averages from previous loops
         }
     
         // Calculate the running average for each frequency range
         float sum = 0;
         for (int k = 0; k < averageLength; k++) {
-            sum += averages[i][k];
+            sum += averages[i][k]; // Adding to sum from 2D averages array
         }
-        sum = sum / averageLength;
+        sum = sum / averageLength; // Averaging sum
     
         // Draw averaged/smoothed frequency ranges
         rect(i * width / 6, height, (i + 1) * width / 6, height - sum);
