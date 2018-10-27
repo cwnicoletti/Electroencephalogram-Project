@@ -8,8 +8,10 @@ This project is based around the construction and modifcation of an instructable
 git clone https://github.com/cwnicoletti/Electroencephalogram-Project/
 cd Electroenceophalogram-Project
 ```
-3. Read initial comment block and line comments
-4. Edit the code from whichever text editor you wish
+3. Read initial comment block along with line comments
+
+## Contributions
+All contributions should be referenced to the [CONTRIBUTIONS](https://github.com/cwnicoletti/Electroencephalogram-Project/blob/master/CONTRIBUTING.md) file before making a pull request.
 
 ## Libraries used
 * [Serial](https://processing.org/reference/libraries/serial/index.html)
