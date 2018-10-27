@@ -1,5 +1,5 @@
 # Electroencephalogram-Project
-This project is based around the construction and modifcation of an instructables DIY electroencephalogram aimed at providing communication via neural firing patterns using current AI strategies. The foundation of this project lies at https://www.instructables.com/id/DIY-EEG-and-ECG-Circuit/. Here you may find every aspect as to how to create the EEG yourself, and may help with understand every aspect of the foundation of this project as well.
+This project is based around the construction and modifcation of an instructables DIY electroencephalogram aimed at providing communication via neural firing patterns using current AI strategies. The foundation of this project lies at https://www.instructables.com/id/DIY-EEG-and-ECG-Circuit/. Here you will find every aspect as to how to create the EEG yourself, and will help with understanding every aspect of the foundation of this project as well.
 
 ## Getting started
 1. Download Processing at https://processing.org/download/
