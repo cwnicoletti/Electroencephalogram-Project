@@ -27,7 +27,7 @@ Here are some ways *you* can contribute:
 
 ## Submitting a Pull Request
 1. [Fork](https://help.github.com/articles/fork-a-repo/) the [official repository](https://github.com/cwnicoletti/Electroencephalogram-Project).
-2. [Create a topic branch.](https://services.github.com/on-demand/intro-to-github/create-a-branch)
+2. [Create a topic branch.](https://help.github.com/articles/about-branches/)
 3. Implement your feature or bug fix.
 4. Add, commit, and push your changes.
 5. [Submit a pull request.](https://help.github.com/articles/about-pull-requests/)
