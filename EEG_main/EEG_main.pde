@@ -35,7 +35,7 @@ import ddf.minim.analysis.*;
 import ddf.minim.effects.*;
 
 //-------------------------Initialization of Variables--------------------------------------
-float timeScale = 50; // Scales the amplitude of time-domain data
+float timeScale = 50000; // Scales the amplitude of time-domain data
 static float normalScale = 50;
 static int freqAvgScale = 50; // Does same for averages of frequency data
 static int alphaCenter = 12;
@@ -115,19 +115,23 @@ void setup() {
 
     // Initialize minim and filter objects
     minim = new Minim(this);
-    lpSP = new LowPassSP(40, 32768);
-    lpFS = new LowPassFS(60, 32768);
-    notch = new NotchFilter(60, 10, 32768);
-    betaFilter = new BandPass(betaCenter / scaleFreq, betaBandwidth / scaleFreq, 32768);
-    alphaFilter = new BandPass(alphaCenter / scaleFreq, alphaBandwidth / scaleFreq, 32768);
+    lpSP = new LowPassSP(40, 2048);
+    lpFS = new LowPassFS(60, 2048);
+    notch = new NotchFilter(60, 10, 2048);
+    betaFilter = new BandPass(betaCenter / scaleFreq, betaBandwidth / scaleFreq, 2048);
+    alphaFilter = new BandPass(alphaCenter / scaleFreq, alphaBandwidth / scaleFreq, 2048);
     
     // Turn on debug messages and initialize LineIn specifications
     minim.debugOn();
-    in = minim.getLineIn(Minim.MONO, 1024); 
-
+    in = minim.getLineIn(Minim.MONO, 2048); 
+    in.addEffect(lpSP);
+    in.addEffect(lpFS);
+    in.addEffect(notch);
+    in.addEffect(betaFilter);
+    in.addEffect(alphaFilter);
     
     // Initialize FFT
-    fft = new FFT(1024, in.sampleRate());
+    fft = new FFT(2048, in.sampleRate());
     fft.window(FFT.HAMMING); // Default: Hamming enabled
     rectMode(CORNERS);
 }
@@ -214,8 +218,6 @@ void drawSignalData() {
         line(i, 50 + in .left.get(i * round( in .bufferSize() / windowWidth)) * timeScale,
         i + 1, 50 + in .left.get((i + 1) * round( in .bufferSize() / windowWidth)) * timeScale);
         
-        println(in .left.get(i * round( in .bufferSize() / windowWidth)) * timeScale);
-        
         // Adding to the time domain average the power spectrum of the audioInput at i
         timeDomainAverage += abs( in .left.get(i * round( in .bufferSize() / windowWidth))); //<>//
         
@@ -261,7 +263,7 @@ void drawSignalData() {
             }
     
         // Draw the actual frequency bars
-        rect(FFTrectWidth * i, FFTheight, FFTrectWidth * (i + 1), FFTheight - fft.getBand(i));
+        rect(FFTrectWidth * i, FFTheight, FFTrectWidth * (i + 1), FFTheight - fft.getBand(i) * 20);
         }
     }
     // Divide the average by how many time points we have
