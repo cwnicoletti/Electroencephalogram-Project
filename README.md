@@ -18,10 +18,8 @@ All contributions should be referenced to the [CONTRIBUTIONS](https://github.com
 * [Minim](http://code.compartmental.net/minim/)
 
 ## Known Bugs
-* Current trouble with frequency bars being displayed
 * in.hasEffect() is a depreciated function
 * Some filters are unused in the code
-* Unsure if AbsoluteDataFlag is being triggered at all
 
 ## Licensing
 The content of this repository is licensed under the terms specified in the [LICENSE](https://github.com/cwnicoletti/Electroencephalogram-Project/blob/master/LICENSE) file.
