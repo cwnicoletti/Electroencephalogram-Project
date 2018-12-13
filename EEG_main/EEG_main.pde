@@ -123,10 +123,11 @@ void setup() {
     
     // Turn on debug messages and initialize LineIn specifications
     minim.debugOn();
-    in = minim.getLineIn(Minim.MONO, 8192 * 4); 
+    in = minim.getLineIn(Minim.MONO, 1024); 
 
+    
     // Initialize FFT
-    fft = new FFT(256, 256);
+    fft = new FFT(1024, in.sampleRate());
     fft.window(FFT.HAMMING); // Default: Hamming enabled
     rectMode(CORNERS);
 }
@@ -196,6 +197,7 @@ public void shiftNtimes(float[] myArray, int numShifts) {
 
 // Draw the signal in time and frequency
 void drawSignalData() {
+    fft.forward(in.left);
     for (int i = 0; i < windowWidth - 1; i++) {
         stroke(255, 255, 255); // Draw signal frequency in white
 
@@ -207,13 +209,16 @@ void drawSignalData() {
             stroke(150, 150, 150);
         }
     
-        // Draw the time domain signal (x1, y1, x2, y2)
+        // Draw the time domain signal (x1, y1, x2, y2) 
+        // "50 +" simply keeps the data centered in the screen
         line(i, 50 + in .left.get(i * round( in .bufferSize() / windowWidth)) * timeScale,
         i + 1, 50 + in .left.get((i + 1) * round( in .bufferSize() / windowWidth)) * timeScale);
         
+        println(in .left.get(i * round( in .bufferSize() / windowWidth)) * timeScale);
+        
         // Adding to the time domain average the power spectrum of the audioInput at i
-        timeDomainAverage += abs( in .left.get(i * round( in .bufferSize() / windowWidth)));
-    
+        timeDomainAverage += abs( in .left.get(i * round( in .bufferSize() / windowWidth))); //<>//
+        
         // Draw un-averaged frequency bands of signal
         if (i < (windowWidth - 1) / 2) {
             // Set colors for each type of brain wave
@@ -256,7 +261,7 @@ void drawSignalData() {
             }
     
         // Draw the actual frequency bars
-        rect(FFTrectWidth * i, FFTheight, FFTrectWidth * (i + 1), FFTheight - fft.getBand(i) / 10);
+        rect(FFTrectWidth * i, FFTheight, FFTrectWidth * (i + 1), FFTheight - fft.getBand(i));
         }
     }
     // Divide the average by how many time points we have
