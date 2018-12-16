@@ -1,33 +1,3 @@
-/* Reading and Visualizing EEG Data
- * by Christian Henry
- 
- * Reads in EEG data through the microphone input of the 
- * computer, then displays the signal in time, its frequency
- * components, and then averages of frequencies that estimate
- * the concentration of different brain waves.
- *
- * For reference, the frequency bars are ordered/classified as
- * follows:
- *   1 - blue -------- delta
- *   2 - blue/purple - theta
- *   3 - purple ------ alpha 
- *   4 - purple/red -- low beta
- *   5 - dark red ---- mid beta
- *   6 - red --------- high beta
- * 
- * This sketch will measure all brain waves, from 0 - 30 Hz. It does
- * best, however, measuring alpha waves across the occipital lobe.
- * To view this function, play the program, click the window to
- * make sure its in "focus", and hit the "a" key to bandpass the alpha
- * waves only. The alpha wave bar is the 3rd one (purple), and should
- * increase in height by 2-3x when you close your eyes and relax
- * (you'll see it for a second or two after you open your eyes, before it
- * averages back down).
- * /
-/* One issue: when taking the FFT of the data, it seems as if
-the frequency bands have a bandwidth of 1.33 instead of 1, as 
-60Hz noise peaks out at band 45. This is worked around by using
-the scaleFreq parameter, which is used frequently. */
 //---------------------------------Imports-------------------------------------------------
 import processing.serial.*;
 import ddf.minim.*;
