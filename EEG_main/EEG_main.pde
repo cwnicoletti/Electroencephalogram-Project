@@ -184,7 +184,7 @@ void drawSignalData() {
         // sets that have data that exceed this by the factor absoluteCutoff
         if (abs( in .left.get(i * round( in .bufferSize() / windowWidth))) * timeScale / normalScale > .95) {
             absoluteBadDataFlag = true;
-            fill(250, 250, 250);
+            fill(255, 255, 255);
             stroke(150, 150, 150);
         }
     
@@ -225,7 +225,7 @@ void drawSignalData() {
             }
             if (i >= round((betaCenter + betaBandwidth) / scaleFreq) + 1 &&
             i <= round(30 / scaleFreq)) {
-                fill(0, 0, 250); // High Beta (Purple - Blue) (~20-30 Hz)
+                fill(0, 0, 250); // High Beta (Purple - Light Blue) (~20-30 Hz)
                 stroke(25, 0, 225);
             }
             if (i >= round(32 / scaleFreq)) {
@@ -248,18 +248,29 @@ void drawSignalData() {
 // Give user textual information on data being thrown out and filters we have active
 void displayText() {
     // Show user when data is being thrown out
-    text("AbsoluteBadDataFlag = " + absoluteBadDataFlag, windowWidth - 200, 120);
     if (absoluteBadDataFlag == true) {
         println("AbsoluteBadDataFlag = " + absoluteBadDataFlag);
         println(counter);
     }
-    text("AverageBadDataFlag = " + averageBadDataFlag, windowWidth - 200, 140);
     if (averageBadDataFlag == true) {
         println("AverageBadDataFlag = " + averageBadDataFlag);
         println(counter);
     }
+    if (absoluteBadDataFlag == true) {
+        fill(255, 0, 0);
+        text("AbsoluteBadDataFlag = " + absoluteBadDataFlag, windowWidth - 200, 120);
+    } else {
+        text("AbsoluteBadDataFlag = " + absoluteBadDataFlag, windowWidth - 200, 120);
+    }
+    if (averageBadDataFlag == true) {
+        fill(255, 0, 0);
+        text("AverageBadDataFlag = " + averageBadDataFlag, windowWidth - 200, 140);
+    } else {
+        text("AverageBadDataFlag = " + averageBadDataFlag, windowWidth - 200, 140);
+    }
 
     // Show user when a filter is being applied to the data
+    fill(255, 255, 255);
     text("Alpha filter is " + in.hasEffect(alphaFilter), windowWidth - 200, 160);
     text("Beta filter is " + in.hasEffect(betaFilter), windowWidth - 200, 180);
 }
