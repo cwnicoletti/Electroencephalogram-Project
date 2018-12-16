@@ -205,27 +205,27 @@ void drawSignalData() {
             }
             if (i >= round(4 / scaleFreq) &&
             i <= round((alphaCenter - alphaBandwidth) / scaleFreq) - 1) {
-                fill(200, 0, 50); // Theta (~4-7 Hz)
+                fill(200, 0, 50); // Theta (Red) (~4-7 Hz)
                 stroke(225, 0, 25);
             }
             if (i >= round((alphaCenter - alphaBandwidth) / scaleFreq) &&
             i <= round((alphaCenter + alphaBandwidth) / scaleFreq)) {
-                fill(150, 0, 100); // Alpha (~7-12 Hz)
+                fill(150, 0, 100); // Alpha (Red - Light Purple) (~7-12 Hz)
                 stroke(175, 0, 75);
             }
             if (i >= round((alphaCenter + alphaBandwidth) / scaleFreq) + 1 &&
             i <= round((betaCenter - betaBandwidth) / scaleFreq) - 1) {
-                fill(100, 0, 150); // Low Beta (~12-16 Hz)
+                fill(100, 0, 150); // Low Beta (Light Purple - Purple)) (~12-16 Hz)
                 stroke(125, 0, 125);
             }
             if (i >= round((betaCenter - betaBandwidth) / scaleFreq) &&
             i <= round((betaCenter + betaBandwidth) / scaleFreq)) {
-                fill(50, 0, 200); // Midrange Beta (~16-20 Hz)
+                fill(50, 0, 200); // Midrange Beta (Purple) (~16-20 Hz)
                 stroke(75, 0, 175);
             }
             if (i >= round((betaCenter + betaBandwidth) / scaleFreq) + 1 &&
             i <= round(30 / scaleFreq)) {
-                fill(0, 0, 250); // High Beta (Purple) (~20-30 Hz)
+                fill(0, 0, 250); // High Beta (Purple - Blue) (~20-30 Hz)
                 stroke(25, 0, 225);
             }
             if (i >= round(32 / scaleFreq)) {
