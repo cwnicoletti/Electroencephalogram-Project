@@ -8,7 +8,6 @@ This project is based around the construction and modifcation of an instructable
 git clone https://github.com/cwnicoletti/Electroencephalogram-Project/
 cd Electroenceophalogram-Project
 ```
-3. Read initial comment block along with line comments
 
 ## Contributions
 All contributions should be referenced to the [CONTRIBUTIONS](https://github.com/cwnicoletti/Electroencephalogram-Project/blob/master/CONTRIBUTING.md) file before making a pull request.
@@ -18,10 +17,7 @@ All contributions should be referenced to the [CONTRIBUTIONS](https://github.com
 * [Minim](http://code.compartmental.net/minim/)
 
 ## Known Bugs
-* Current trouble with frequency bars being displayed
-* in.hasEffect() is a depreciated function
-* Some filters are unused in the code
-* Unsure if AbsoluteDataFlag is being triggered at all
+Currently no known bugs.
 
 ## Licensing
 The content of this repository is licensed under the terms specified in the [LICENSE](https://github.com/cwnicoletti/Electroencephalogram-Project/blob/master/LICENSE) file.
