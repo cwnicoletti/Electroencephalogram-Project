@@ -104,7 +104,7 @@ void setup() {
     in.addEffect(betaFilter);
     
     // Initialize FFT
-    fft = new FFT(32768, in.sampleRate());
+    fft = new FFT(in.bufferSize(), in.sampleRate());
     fft.window(FFT.HAMMING); // Default: Hamming enabled
     rectMode(CORNERS);
 }
@@ -249,22 +249,19 @@ void drawSignalData() {
 void displayText() {
     // Show user when data is being thrown out
     if (absoluteBadDataFlag == true) {
-        println("AbsoluteBadDataFlag = " + absoluteBadDataFlag);
-        println(counter);
-    }
-    if (averageBadDataFlag == true) {
-        println("AverageBadDataFlag = " + averageBadDataFlag);
-        println(counter);
-    }
-    if (absoluteBadDataFlag == true) {
         fill(255, 0, 0);
         text("AbsoluteBadDataFlag = " + absoluteBadDataFlag, windowWidth - 200, 120);
+        println("AbsoluteBadDataFlag = " + absoluteBadDataFlag);
+        println(counter);
     } else {
         text("AbsoluteBadDataFlag = " + absoluteBadDataFlag, windowWidth - 200, 120);
     }
+    
     if (averageBadDataFlag == true) {
         fill(255, 0, 0);
         text("AverageBadDataFlag = " + averageBadDataFlag, windowWidth - 200, 140);
+        println("AverageBadDataFlag = " + averageBadDataFlag);
+        println(counter);
     } else {
         text("AverageBadDataFlag = " + averageBadDataFlag, windowWidth - 200, 140);
     }
