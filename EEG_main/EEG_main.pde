@@ -256,12 +256,29 @@ void displayText() {
     } else {
         text("AbsoluteBadDataFlag = " + absoluteBadDataFlag, windowWidth - 200, 120);
     }
+<<<<<<< HEAD
     
+||||||| parent of 37bf3d1... Changes text o red with bad data, minor text/color changes
+    text("AverageBadDataFlag = " + averageBadDataFlag, windowWidth - 200, 140);
+=======
+>>>>>>> 37bf3d1... Changes text o red with bad data, minor text/color changes
     if (averageBadDataFlag == true) {
         fill(255, 0, 0);
         text("AverageBadDataFlag = " + averageBadDataFlag, windowWidth - 200, 140);
         println("AverageBadDataFlag = " + averageBadDataFlag);
         println(counter);
+    } else {
+        text("AverageBadDataFlag = " + averageBadDataFlag, windowWidth - 200, 140);
+    }
+    if (absoluteBadDataFlag == true) {
+        fill(255, 0, 0);
+        text("AbsoluteBadDataFlag = " + absoluteBadDataFlag, windowWidth - 200, 120);
+    } else {
+        text("AbsoluteBadDataFlag = " + absoluteBadDataFlag, windowWidth - 200, 120);
+    }
+    if (averageBadDataFlag == true) {
+        fill(255, 0, 0);
+        text("AverageBadDataFlag = " + averageBadDataFlag, windowWidth - 200, 140);
     } else {
         text("AverageBadDataFlag = " + averageBadDataFlag, windowWidth - 200, 140);
     }
