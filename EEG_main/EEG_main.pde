@@ -35,7 +35,7 @@ import ddf.minim.analysis.*;
 import ddf.minim.effects.*;
 
 //-------------------------Initialization of Variables--------------------------------------
-float timeScale = 50000; // Scales the amplitude of time-domain data
+float timeScale = 50; // Scales the amplitude of time-domain data
 static float normalScale = 50;
 static int freqAvgScale = 50; // Does same for averages of frequency data
 static int alphaCenter = 12;
@@ -58,6 +58,7 @@ FFT fft;
 NotchFilter notch;
 LowPassSP lpSP;
 LowPassFS lpFS;
+HighPassSP hpSP;
 BandPass betaFilter;
 BandPass alphaFilter;
 
@@ -115,23 +116,25 @@ void setup() {
 
     // Initialize minim and filter objects
     minim = new Minim(this);
-    lpSP = new LowPassSP(40, 2048);
-    lpFS = new LowPassFS(60, 2048);
-    notch = new NotchFilter(60, 10, 2048);
-    betaFilter = new BandPass(betaCenter / scaleFreq, betaBandwidth / scaleFreq, 2048);
-    alphaFilter = new BandPass(alphaCenter / scaleFreq, alphaBandwidth / scaleFreq, 2048);
+    lpSP = new LowPassSP(31, 32768);
+    lpFS = new LowPassFS(60, 32768);
+    hpSP = new HighPassSP(7, 32768);
+    notch = new NotchFilter(60, 10, 32768);
+    betaFilter = new BandPass(betaCenter / scaleFreq, betaBandwidth / scaleFreq, 32768);
+    alphaFilter = new BandPass(alphaCenter / scaleFreq, alphaBandwidth / scaleFreq, 32768);
     
     // Turn on debug messages and initialize LineIn specifications
     minim.debugOn();
-    in = minim.getLineIn(Minim.MONO, 2048); 
+    in = minim.getLineIn(Minim.MONO, 32768); 
     in.addEffect(lpSP);
     in.addEffect(lpFS);
+    in.addEffect(hpSP);
     in.addEffect(notch);
-    in.addEffect(betaFilter);
     in.addEffect(alphaFilter);
+    in.addEffect(betaFilter);
     
     // Initialize FFT
-    fft = new FFT(2048, in.sampleRate());
+    fft = new FFT(32768, in.sampleRate());
     fft.window(FFT.HAMMING); // Default: Hamming enabled
     rectMode(CORNERS);
 }
@@ -201,7 +204,9 @@ public void shiftNtimes(float[] myArray, int numShifts) {
 
 // Draw the signal in time and frequency
 void drawSignalData() {
+  
     fft.forward(in.left);
+    
     for (int i = 0; i < windowWidth - 1; i++) {
         stroke(255, 255, 255); // Draw signal frequency in white
 
@@ -225,36 +230,36 @@ void drawSignalData() {
         if (i < (windowWidth - 1) / 2) {
             // Set colors for each type of brain wave
             if (i <= round(3 / scaleFreq)) {
-                fill(250, 0, 0); // Delta (Red)
+                fill(250, 0, 0); // Delta (Red) (~1-4 Hz)
                 stroke(255, 0, 10);
             }
             if (i >= round(4 / scaleFreq) &&
             i <= round((alphaCenter - alphaBandwidth) / scaleFreq) - 1) {
-                fill(200, 0, 50); // Theta
+                fill(200, 0, 50); // Theta (~4-7 Hz)
                 stroke(225, 0, 25);
             }
             if (i >= round((alphaCenter - alphaBandwidth) / scaleFreq) &&
             i <= round((alphaCenter + alphaBandwidth) / scaleFreq)) {
-                fill(150, 0, 100); // Alpha
+                fill(150, 0, 100); // Alpha (~7-12 Hz)
                 stroke(175, 0, 75);
             }
             if (i >= round((alphaCenter + alphaBandwidth) / scaleFreq) + 1 &&
             i <= round((betaCenter - betaBandwidth) / scaleFreq) - 1) {
-                fill(100, 0, 150); // Low Beta
+                fill(100, 0, 150); // Low Beta (~12-16 Hz)
                 stroke(125, 0, 125);
             }
             if (i >= round((betaCenter - betaBandwidth) / scaleFreq) &&
             i <= round((betaCenter + betaBandwidth) / scaleFreq)) {
-                fill(50, 0, 200); // Midrange Beta
+                fill(50, 0, 200); // Midrange Beta (~16-20 Hz)
                 stroke(75, 0, 175);
             }
             if (i >= round((betaCenter + betaBandwidth) / scaleFreq) + 1 &&
             i <= round(30 / scaleFreq)) {
-                fill(0, 0, 250); // High Beta (Purple)
+                fill(0, 0, 250); // High Beta (Purple) (~20-30 Hz)
                 stroke(25, 0, 225);
             }
             if (i >= round(32 / scaleFreq)) {
-                fill(240, 240, 240); // Noise
+                fill(240, 240, 240); // Noise (30-60 Hz)
                 stroke(200, 200, 200);
             }
             if (i == round(60 / scaleFreq)) {
@@ -301,38 +306,38 @@ void displayFreqAverages() {
         if (i == 0) {
             lowFreq = 0;
             hiFreq = 3;
-            fill(0, 0, 250);
-            stroke(25, 0, 225);
+            fill(250, 0, 0);
+            stroke(255, 0, 10);
         }
         if (i == 1) {
             lowFreq = 3;
             hiFreq = 7;
-            fill(50, 0, 200);
-            stroke(75, 0, 175);
+            fill(200, 0, 50);
+            stroke(225, 0, 25);
         }
         if (i == 2) {
             lowFreq = alphaCenter - alphaBandwidth;
             hiFreq = alphaCenter + alphaBandwidth;
-            fill(100, 0, 150);
-            stroke(125, 0, 125);
+            fill(150, 0, 100);
+            stroke(175, 0, 75);
         }
         if (i == 3) {
             lowFreq = 12;
             hiFreq = 15;
-            fill(150, 0, 100);
-            stroke(175, 0, 75);
+            fill(100, 0, 150);
+            stroke(125, 0, 125);
         }
         if (i == 4) {
             lowFreq = betaCenter - betaBandwidth;
             hiFreq = betaCenter + betaBandwidth;
-            fill(200, 0, 50);
-            stroke(225, 0, 25);
+            fill(50, 0, 200);
+            stroke(75, 0, 175);
         }
         if (i == 5) {
         lowFreq = 20;
         hiFreq = 30;
-        fill(250, 0, 0);
-        stroke(255, 0, 10);
+        fill(0, 0, 250);
+        stroke(25, 0, 225);
         }
     
         // Convert frequencies to FFT bands. Because of our FFT parameters(256, 256),
@@ -370,7 +375,7 @@ void displayFreqAverages() {
         sum = sum / averageLength; // Averaging sum
     
         // Draw averaged/smoothed frequency ranges
-        rect(i * width / 6, height, (i + 1) * width / 6, height - sum);
+        rect(i * width / 6, height, (i + 1) * width / 6, height - sum * 20);
     }
 }
 
