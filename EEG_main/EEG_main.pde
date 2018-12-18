@@ -19,7 +19,7 @@ int inBuffer = 4; // How many data points to take in at once, this*60 = sampling
 float displayBuffer[][] = new float[NUM_CHANNELS][fRate * inBuffer * seconds];
 float timeLength = displayBuffer[0].length; // Number of samples/sec in time 
 
-// Variables used to store data functions/effects.
+// Variables used to store data functions/effects
 Minim minim;
 AudioInput in;
 Serial myPort;
@@ -81,23 +81,24 @@ void setup() {
     // Set drawing parameters
     FFTheight = windowHeight - 200;
 
-    // Setting size of window interface
+    // Set size of window interface
     surface.setSize(windowWidth, windowHeight);
 
     // Initialize minim and filter objects
     minim = new Minim(this);
-    lpSP = new LowPassSP(31, 32768);
-    lpFS = new LowPassFS(60, 32768);
-    hpSP = new HighPassSP(7, 32768);
-    notch = new NotchFilter(60, 10, 32768);
-    betaFilter = new BandPass(betaCenter / scaleFreq, betaBandwidth / scaleFreq, 32768);
-    alphaFilter = new BandPass(alphaCenter / scaleFreq, alphaBandwidth / scaleFreq, 32768);
+    lpSP = new LowPassSP(31, 44100);
+    lpFS = new LowPassFS(60, 44100);
+    hpSP = new HighPassSP(7, 44100);
+    notch = new NotchFilter(60, 23, 44100); // bin width = frequency/number of bins
+    betaFilter = new BandPass(betaCenter / scaleFreq, betaBandwidth / scaleFreq, 44100);
+    alphaFilter = new BandPass(alphaCenter / scaleFreq, alphaBandwidth / scaleFreq, 44100);
     
-    // Turn on debug messages and initialize LineIn specifications
+    // Turn on debug messages
     minim.debugOn();
     
-    // Defining minim input with filters
-    in = minim.getLineIn(Minim.MONO, 32768, 44100, 16); // (type, bufferSize, sampleRate, bitDepth)
+    // Define minim input with filters
+    // (type, bufferSize, sampleRate, bitDepth)
+    in = minim.getLineIn(Minim.MONO, 32768, 44100, 16);
     in.addEffect(lpSP);
     in.addEffect(lpFS);
     in.addEffect(hpSP);
