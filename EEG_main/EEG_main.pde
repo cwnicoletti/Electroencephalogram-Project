@@ -5,14 +5,14 @@ import ddf.minim.analysis.*;
 import ddf.minim.effects.*;
 
 //-------------------------Initialization of Variables--------------------------------------
-int timeScale = 50; // Scales the amplitude of time-domain data
+int timeScale = 50000; // Scales the amplitude of time-domain data
 static int normalScale = 50;
-static int freqAvgScale = 50; // Does same for averages of frequency data
-static int alphaCenter = 12;
-static int alphaBandwidth = 2; // Actually bandwidth divided by 2
-static int betaCenter = 24;
+static int freqAvgScale = 50; // Scales the amplitude for averages of frequency data
+static int alphaCenter = 10;
+static int alphaBandwidth = 2; 
+static int betaCenter = 25;
 static int betaBandwidth = 2;
-static int NUM_CHANNELS = 2;
+static int NUM_CHANNELS = 1;
 int seconds = 2; // How many seconds of data to display / analyze at once
 int fRate = 60;
 int inBuffer = 4; // How many data points to take in at once, this*60 = sampling rate
@@ -22,19 +22,20 @@ float timeLength = displayBuffer[0].length; // Number of samples/sec in time
 // Variables used to store data functions/effects
 Minim minim;
 AudioInput in;
-Serial myPort;
-float[] timeSignal = new float[240];
 FFT fft;
+Serial myPort;
 NotchFilter notch;
 LowPassSP lpSP;
 LowPassFS lpFS;
 HighPassSP hpSP;
 BandPass betaFilter;
 BandPass alphaFilter;
+float[] timeSignal = new float[240];
 
 // Constants mainly used for scaling the data to readable sizes
 int windowWidth = 840;
 int windowHeight = 500;
+int FFTrectWidth = 18;
 int FFTheight;
 float scaling[] = {
  .00202,
@@ -44,7 +45,6 @@ float scaling[] = {
  .008864,
  .01777
 };
-int FFTrectWidth = 18;
 float scaleFreq = 1.33f;
 float timeDomainAverage = 0;
 
@@ -85,11 +85,14 @@ void setup() {
     surface.setSize(windowWidth, windowHeight);
 
     // Initialize minim and filter objects
+    // NotchFilter: Frame size of 4,096 samples gives us 2048 frequency bands or bins
+    // This gives a bin width of ~21 Hz (giving worse resolution at low freq and better at high freq)
+    // bin width = frequency / number of bins
     minim = new Minim(this);
     lpSP = new LowPassSP(31, 44100);
     lpFS = new LowPassFS(60, 44100);
     hpSP = new HighPassSP(7, 44100);
-    notch = new NotchFilter(60, 23, 44100); // bin width = frequency/number of bins
+    notch = new NotchFilter(60, 21.533203125, 44100);
     betaFilter = new BandPass(betaCenter / scaleFreq, betaBandwidth / scaleFreq, 44100);
     alphaFilter = new BandPass(alphaCenter / scaleFreq, alphaBandwidth / scaleFreq, 44100);
     
@@ -107,9 +110,7 @@ void setup() {
     in.addEffect(betaFilter);
     
     // Initialize FFT
-    // Frame size of 4,096 samples gives us 2048 frequency bands
-    // This gives a bin width of ~21 Hz (giving worse resolution at low freq and better at high freq)
-    fft = new FFT(in.bufferSize(), 4096/2);
+    fft = new FFT(in.bufferSize(), in.sampleRate());
     fft.window(FFT.HAMMING); // Default: Hamming enabled
     rectMode(CORNERS);
 }
