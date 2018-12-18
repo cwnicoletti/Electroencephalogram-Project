@@ -5,8 +5,8 @@ import ddf.minim.analysis.*;
 import ddf.minim.effects.*;
 
 //-------------------------Initialization of Variables--------------------------------------
-float timeScale = 50; // Scales the amplitude of time-domain data
-static float normalScale = 50;
+int timeScale = 50; // Scales the amplitude of time-domain data
+static int normalScale = 50;
 static int freqAvgScale = 50; // Does same for averages of frequency data
 static int alphaCenter = 12;
 static int alphaBandwidth = 2; // Actually bandwidth divided by 2
@@ -95,7 +95,9 @@ void setup() {
     
     // Turn on debug messages and initialize LineIn specifications
     minim.debugOn();
-    in = minim.getLineIn(Minim.MONO, 32768); 
+    
+    // Defining minim input with filters
+    in = minim.getLineIn(Minim.MONO, 32768, 44100, 16); // (type, bufferSize, sampleRate, bitDepth)
     in.addEffect(lpSP);
     in.addEffect(lpFS);
     in.addEffect(hpSP);
@@ -104,7 +106,9 @@ void setup() {
     in.addEffect(betaFilter);
     
     // Initialize FFT
-    fft = new FFT(in.bufferSize(), in.sampleRate());
+    // Frame size of 4,096 samples gives us 2048 frequency bands
+    // This gives a bin width of ~21 Hz (giving worse resolution at low freq and better at high freq)
+    fft = new FFT(in.bufferSize(), 4096/2);
     fft.window(FFT.HAMMING); // Default: Hamming enabled
     rectMode(CORNERS);
 }
