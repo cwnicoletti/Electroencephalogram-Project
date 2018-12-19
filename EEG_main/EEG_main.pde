@@ -19,7 +19,7 @@ int inBuffer = 4; // How many data points to take in at once, this*60 = sampling
 float displayBuffer[][] = new float[NUM_CHANNELS][fRate * inBuffer * seconds];
 float timeLength = displayBuffer[0].length; // Number of samples/sec in time 
 
-// Variables used to store data functions/effects
+// Input storage & filter variables
 Minim minim;
 AudioInput in;
 FFT fft;
@@ -31,15 +31,15 @@ HighPassSP hpSP;
 BandPass betaFilter;
 BandPass alphaFilter;
 float[] timeSignal = new float[240];
-StringBuilder hex = new StringBuilder();
-int colmax = 840;
-int rowmax = 100;
-int[][] sgram = new int[rowmax][colmax];
-int col;
-int leftedge;
-int R = 0; int G = 0; int B = 0;
 
-// Constants mainly used for scaling the data to readable sizes
+// Spectrogram variables
+int colmax = 840; int rowmax = 100;
+int col; int leftedge;
+int R = 0; int G = 0; int B = 0;
+int[][] sgram = new int[rowmax][colmax];
+StringBuilder hex = new StringBuilder();
+
+// Window interface & variables scaling data to readable sizes
 int windowWidth = 840;
 int windowHeight = 500;
 int FFTrectWidth = 18;
@@ -55,7 +55,7 @@ float scaling[] = {
 float scaleFreq = 1.33f;
 float timeDomainAverage = 0;
 
-// Variables used to handle bad data
+// Handling bad data variables
 int cutoffHeight = 200; // Frequency height to throw out "bad data" for averaging after
 float absoluteCutoff = 1.5;
 boolean absoluteBadDataFlag; //  Data that is bad because it's way too far out of our desired range --
@@ -64,7 +64,7 @@ boolean averageBadDataFlag; //  Data that's bad because it spikes too far outsid
                             //  that second -- 
                             //  ex: blinking your eyes for a split second
 
-// Constants used to create a running average of the data.
+// Running average of data variables
 float[][] averages;
 int averageLength = 200; // Averages about the last 5 seconds worth of data
 int averageBins = 6; // 6 types of brain waves
@@ -150,7 +150,7 @@ void draw() {
     counter++;
 }
 
-// Used for comparing the difference of hamming and lack of hamming
+// Use: comparing different windowing techniques for FFT
 void keyPressed() {
     if (key == 'w') { fft.window(FFT.HAMMING); }
     if (key == 'e') { fft.window(FFT.NONE); }
@@ -178,9 +178,8 @@ public void shiftNtimes(float[] myArray, int numShifts) {
     }
 }
 
-// Draw the signal in time and frequency
+// Draw the signal in time, frequency, and amplitude
 void drawSignalData() {
-  
     // Performing forward FFT on samples from the left buffer
     fft.forward(in.left);
     
@@ -306,7 +305,6 @@ void displayText() {
     } else {
         text("AbsoluteBadDataFlag = " + absoluteBadDataFlag, windowWidth - 200, 120);
     }
-    
     if (averageBadDataFlag == true) {
         fill(255, 0, 0);
         text("AverageBadDataFlag = " + averageBadDataFlag, windowWidth - 200, 140);
