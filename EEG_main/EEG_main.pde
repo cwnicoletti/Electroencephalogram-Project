@@ -5,7 +5,7 @@ import ddf.minim.analysis.*;
 import ddf.minim.effects.*;
 
 //-------------------------Initialization of Variables--------------------------------------
-int timeScale = 50000; // Scales the amplitude of time-domain data
+int timeScale = 50; // Scales the amplitude of time-domain data
 static int normalScale = 50;
 static int freqAvgScale = 50; // Scales the amplitude for averages of frequency data
 static int alphaCenter = 10;
@@ -31,6 +31,13 @@ HighPassSP hpSP;
 BandPass betaFilter;
 BandPass alphaFilter;
 float[] timeSignal = new float[240];
+StringBuilder hex = new StringBuilder();
+int colmax = 840;
+int rowmax = 100;
+int[][] sgram = new int[rowmax][colmax];
+int col;
+int leftedge;
+int R = 0; int G = 0; int B = 0;
 
 // Constants mainly used for scaling the data to readable sizes
 int windowWidth = 840;
@@ -155,6 +162,9 @@ void keyPressed() {
     if (key == 'e') {
         fft.window(FFT.NONE);
     }
+    if (key == 'r') {
+        fft.window(FFT.HANN);
+    }
 }
 
 // While there are bytes to use, shift the timeSignal array backwards
@@ -181,10 +191,59 @@ public void shiftNtimes(float[] myArray, int numShifts) {
 // Draw the signal in time and frequency
 void drawSignalData() {
   
+    // Performing forward FFT on samples from the left buffer
     fft.forward(in.left);
     
+    // Defining spectral values
+    for (int m = 0; m < rowmax; m++) {
+        sgram[m][col] = (int)Math.round(Math.max(0,2*20*Math.log10(1000*fft.getBand(m))));
+    }
+    col += 1; // Next column on next loop
+    if (col == colmax) { col = 0; } // Once this wraps around, reset columns to 0
+    
+    // Drawing the spectrogram points
+    for (int m = 0; m < colmax-leftedge; m++)  {
+      for (int j = 0; j < rowmax; j++) {
+        int clr = sgram[j][m+leftedge];
+        String hex_clr = Integer.toHexString(clr);
+        hex.append(hex_clr);
+        if (hex.length() != 6) {
+            while (hex.length() < 6) {
+                hex.append(0);
+          }
+        }
+        R = Integer.valueOf(hex.substring(0, 2), 16);
+        G = Integer.valueOf(hex.substring(2, 4), 16);
+        B = Integer.valueOf(hex.substring(4, 6), 16);
+        stroke(R, G, B);
+        point(m, j);
+        hex.setLength(0);
+      }
+    }
+    
+    // Drawing the rest of the image as the beginning of the array
+    for (int m = 0; m < leftedge; m++) {
+      for (int j = 0; j < rowmax; j++) {
+        int clr = sgram[j][m];
+        String hex_clr = Integer.toHexString(clr);
+        hex.append(hex_clr);
+        if (hex.length() != 6) {
+            while (hex.length() < 6) {
+                hex.append(0);
+          }
+        }
+        R = Integer.valueOf(hex.substring(0, 2), 16);
+        G = Integer.valueOf(hex.substring(2, 4), 16);
+        B = Integer.valueOf(hex.substring(4, 6), 16);
+        stroke(R, G, B);
+        point(m+colmax-leftedge, j);
+        hex.setLength(0);
+      }
+    }
+    leftedge = leftedge + 1; // Move left by one, moving the spectrogram to the left
+    if (leftedge == colmax) { leftedge = 0; } // Wraps around in a circular array
+    
     for (int i = 0; i < windowWidth - 1; i++) {
-        stroke(255, 255, 255); // Draw signal frequency in white
 
         // Data that fills our window is normalized to +-1, so we want to throw out
         // sets that have data that exceed this by the factor absoluteCutoff
@@ -193,11 +252,6 @@ void drawSignalData() {
             fill(255, 255, 255);
             stroke(150, 150, 150);
         }
-    
-        // Draw the time domain signal (x1, y1, x2, y2) 
-        // "50 +" simply keeps the data centered in the screen
-        line(i, 50 + in .left.get(i * round( in .bufferSize() / windowWidth)) * timeScale,
-        i + 1, 50 + in .left.get((i + 1) * round( in .bufferSize() / windowWidth)) * timeScale);
         
         // Adding to the time domain average the power spectrum of the audioInput at i
         timeDomainAverage += abs( in .left.get(i * round( in .bufferSize() / windowWidth))); //<>//
