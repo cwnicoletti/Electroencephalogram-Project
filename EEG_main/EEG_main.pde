@@ -75,15 +75,11 @@ void setup() {
     // Initialize 2D array of averages for running average calculation
     averages = new float[averageBins][averageLength];
     for (int i = 0; i < averageBins; i++) {
-        for (int j = 0; j < averageLength; j++) {
-            averages[i][j] = 0;
-        }
+        for (int j = 0; j < averageLength; j++) { averages[i][j] = 0; }
     }
     
     // Initialize array used for input
-    for (int i = 0; i < 240; i++) {
-        timeSignal[i] = 0;
-    }
+    for (int i = 0; i < 240; i++) { timeSignal[i] = 0; }
 
     // Set drawing parameters
     FFTheight = windowHeight - 200;
@@ -156,15 +152,9 @@ void draw() {
 
 // Used for comparing the difference of hamming and lack of hamming
 void keyPressed() {
-    if (key == 'w') {
-        fft.window(FFT.HAMMING);
-    }
-    if (key == 'e') {
-        fft.window(FFT.NONE);
-    }
-    if (key == 'r') {
-        fft.window(FFT.HANN);
-    }
+    if (key == 'w') { fft.window(FFT.HAMMING); }
+    if (key == 'e') { fft.window(FFT.NONE); }
+    if (key == 'r') { fft.window(FFT.HANN); }
 }
 
 // While there are bytes to use, shift the timeSignal array backwards
@@ -195,16 +185,16 @@ void drawSignalData() {
     fft.forward(in.left);
     
     // Defining spectral values
-    for (int m = 0; m < rowmax; m++) {
-        sgram[m][col] = (int)Math.round(Math.max(0,2*20*Math.log10(1000*fft.getBand(m))));
+    for (int i = 0; i < rowmax; i++) {
+        sgram[i][col] = (int)Math.round(Math.max(0,2*20*Math.log10(1000*fft.getBand(i))));
     }
     col += 1; // Next column on next loop
     if (col == colmax) { col = 0; } // Once this wraps around, reset columns to 0
     
     // Drawing the spectrogram points
-    for (int m = 0; m < colmax-leftedge; m++)  {
+    for (int i = 0; i < colmax-leftedge; i++)  {
       for (int j = 0; j < rowmax; j++) {
-        int clr = sgram[j][m+leftedge];
+        int clr = sgram[j][i+leftedge];
         String hex_clr = Integer.toHexString(clr);
         hex.append(hex_clr);
         if (hex.length() != 6) {
@@ -216,29 +206,29 @@ void drawSignalData() {
         G = Integer.valueOf(hex.substring(2, 4), 16);
         B = Integer.valueOf(hex.substring(4, 6), 16);
         stroke(R, G, B);
-        point(m, j);
+        point(i, j);
         hex.setLength(0);
       }
     }
     
     // Drawing the rest of the image as the beginning of the array
-    for (int m = 0; m < leftedge; m++) {
-      for (int j = 0; j < rowmax; j++) {
-        int clr = sgram[j][m];
-        String hex_clr = Integer.toHexString(clr);
-        hex.append(hex_clr);
-        if (hex.length() != 6) {
-            while (hex.length() < 6) {
-                hex.append(0);
-          }
+    for (int i = 0; i < leftedge; i++) {
+        for (int j = 0; j < rowmax; j++) {
+            int clr = sgram[j][i];
+            String hex_clr = Integer.toHexString(clr);
+            hex.append(hex_clr);
+            if (hex.length() != 6) {
+                while (hex.length() < 6) {
+                    hex.append(0);
+              }
+            }
+            R = Integer.valueOf(hex.substring(0, 2), 16);
+            G = Integer.valueOf(hex.substring(2, 4), 16);
+            B = Integer.valueOf(hex.substring(4, 6), 16);
+            stroke(R, G, B);
+            point(i+colmax-leftedge, j);
+            hex.setLength(0);
         }
-        R = Integer.valueOf(hex.substring(0, 2), 16);
-        G = Integer.valueOf(hex.substring(2, 4), 16);
-        B = Integer.valueOf(hex.substring(4, 6), 16);
-        stroke(R, G, B);
-        point(m+colmax-leftedge, j);
-        hex.setLength(0);
-      }
     }
     leftedge = leftedge + 1; // Move left by one, moving the spectrogram to the left
     if (leftedge == colmax) { leftedge = 0; } // Wraps around in a circular array
