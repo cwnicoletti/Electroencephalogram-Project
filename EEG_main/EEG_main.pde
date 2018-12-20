@@ -35,9 +35,9 @@ float[] timeSignal = new float[240];
 // Spectrogram variables
 int colmax = 840; int rowmax = 100;
 int col; int leftedge;
-int R = 0; int G = 0; int B = 0;
 int[][] sgram = new int[rowmax][colmax];
 StringBuilder hex = new StringBuilder();
+int R = 0; int G = 0; int B = 0;
 
 // Window interface & variables scaling data to readable sizes
 int windowWidth = 840;
@@ -198,7 +198,7 @@ void drawSignalData() {
         hex.append(hex_clr);
         if (hex.length() != 6) {
             while (hex.length() < 6) {
-                hex.append(0);
+                hex.append(000000);
           }
         }
         R = Integer.valueOf(hex.substring(0, 2), 16);
@@ -218,7 +218,7 @@ void drawSignalData() {
             hex.append(hex_clr);
             if (hex.length() != 6) {
                 while (hex.length() < 6) {
-                    hex.append(0);
+                    hex.append(000000);
               }
             }
             R = Integer.valueOf(hex.substring(0, 2), 16);
