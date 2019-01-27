@@ -2,12 +2,20 @@
 This project is based around the construction and modifcation of an instructables DIY electroencephalogram aimed at providing communication via neural firing patterns using current AI strategies. The foundation of this project lies at https://www.instructables.com/id/DIY-EEG-and-ECG-Circuit/. Here you will find every aspect as to how to create the EEG yourself, and will help with understanding every aspect of the foundation of this project as well.
 
 ## Getting started
-1. Download Processing at https://processing.org/download/
-2. Clone the repository and change your directory to repository
+1. Download Processing 3 at https://processing.org/download/
+2. Clone the repository in your command line and change your directory to the repository
 ```
 git clone https://github.com/cwnicoletti/Electroencephalogram-Project/
 cd Electroenceophalogram-Project
 ```
+3. Open Processing
+4. File > Open... > *EEG_main.pde*
+### If attempting to open EEG_main_python_pde.pyde
+4. In the upper-right-hand corner of the Processing IDE window press "Java"
+5. Click "Add Mode..."
+6. Search in the Modes tab "python"
+7. Install "Python Mode for Processing 3"
+8. You may now go to File > Open... > *EEG_main_python_pde.pyde*
 
 ## Contributions
 All contributions should be referenced to the [CONTRIBUTIONS](https://github.com/cwnicoletti/Electroencephalogram-Project/blob/master/CONTRIBUTING.md) file before making a pull request.
