@@ -371,7 +371,7 @@ void displayFreqAverages() {
         int lowBound = fft.freqToIndex(lowFreq);
         int hiBound = fft.freqToIndex(hiFreq);
     
-        // Scale the band number, issue outlined at beginning of program
+        // Scale the band number, issue outlined in ACCREDITATION file
         lowBound = round(lowBound / scaleFreq);
         hiBound = round(hiBound / scaleFreq);
     
