@@ -1,17 +1,18 @@
-# Imports
+#---------------------------------Imports-------------------------------------------------
 add_library('minim')
 add_library('serial')
 
-# Important constants that may need to be changed.
+
+#-------------------------Initialization of Variables--------------------------------------
 timeScale = 50 # Scales the amplitude of time-domain data
 normalScale = 50
 alphaScale = 100
 freqAvgScale = 50 # Scales the amplitude for averages of frequency data
-alphaCenter = 12
+alphaCenter = 10
 alphaBandwidth = 2
-betaCenter = 24
+betaCenter = 25
 betaBandwidth = 2
-NUM_CHANNELS = 2
+NUM_CHANNELS = 1
 seconds = 2 # How many seconds of data to display / analyze at once
 fRate = 60
 inBuffer = 4 # How many data points to take in at once, this*60 = sampling rate
@@ -21,14 +22,14 @@ timeLength = len(displayBuffer[0]) # Number of samples/sec in time
 # Input storage & filter variables
 minim = Minim
 in2 = AudioInput
-myPort = Serial
-timeSignal = [0 for i in range(240)]
 fft = FFT
+myPort = Serial
 notch = NotchFilter
 lpSP = LowPassSP
 lpFS = LowPassFS
 betaFilter = BandPass
 alphaFilter = BandPass
+timeSignal = [0 for i in range(240)]
 
 # Spectrogram variables
 colmax = 840
@@ -50,19 +51,14 @@ timeDomainAverage = 0
 # Handling bad data variables
 cutoffHeight = 200 # Frequency height to throw out "bad data" for averaging after
 absoluteCutoff = 1.5
-
-# absoluteBadDataFlag: Data that is bad because it's way too far out of our desired range --
-# ex: shaking your head for a second
-
-# averageBadDataFlag: Data that's bad because it spikes too far outside of the average for 
-# that second -- 
-# ex: blinking your eyes for a split second
                              
 # Constants used to create a running average of the data.
 averageLength = 200 # averages about the last 5 seconds worth of data
 averageBins = 6 # we have 6 types of brain waves
 counter = 0
 
+
+#--------------------------Functions------------------------------------------------------
 def setup():
     # Initialize 2D array of averages for running average calculation
     averages = [[0 for i in range(averageLength)] for j in range(averageBins)]
@@ -110,13 +106,17 @@ def draw():
     (controlled by the variable cutoffHeight), it won't consider that data
     when computing the running average.
     """
-    absoluteBadDataFlag = False
-    averageBadDataFlag = False
+    absoluteBadDataFlag = False  # absoluteBadDataFlag: Data that is bad because it's way too far out of our desired range --
+                                 # ex: shaking your head for a second
+    
+    averageBadDataFlag = False  # averageBadDataFlag: Data that's bad because it spikes too far outside of the average for 
+                                # that second -- 
+                                # ex: blinking your eyes for a split second
     
     background(0) # Make sure the background color is black
     stroke(255) # Time data is drawn in white
     
-    line(0,100,windowWidth,100) # Line separating time and frequency data
+    line(0, 100, windowWidth, 100) # Line separating time and frequency data
     
     drawSignalData()
     
