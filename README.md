@@ -10,7 +10,7 @@ cd Electroenceophalogram-Project
 ```
 3. Open Processing
 4. File > Open... > *EEG_main.pde*
-### If attempting to open EEG_main_python_pde.pyde
+### If attempting to open EEG_main_python.pyde
 4. In the upper-right-hand corner of the Processing IDE window press "Java"
 5. Click "Add Mode..."
 6. Search in the Modes tab "python"
