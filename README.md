@@ -15,7 +15,7 @@ cd Electroenceophalogram-Project
 5. Click "Add Mode..."
 6. Search in the Modes tab "python"
 7. Install "Python Mode for Processing 3"
-8. You may now go to File > Open... > *EEG_main_python_pde.pyde*
+8. You may now go to File > Open... > *EEG_main_python.pyde*
 
 ## Contributions
 All contributions should be referenced to the [CONTRIBUTIONS](https://github.com/cwnicoletti/Electroencephalogram-Project/blob/master/CONTRIBUTING.md) file before making a pull request.
