@@ -9,13 +9,13 @@ git clone https://github.com/cwnicoletti/Electroencephalogram-Project/
 cd Electroenceophalogram-Project
 ```
 3. Open Processing
-4. File > Open... > *EEG_main.pde*
-### If attempting to open EEG_main_python.pyde
+4. File > Open... > *Processing_Java.pde*
+### If attempting to open Processing_Python.pyde
 4. In the upper-right-hand corner of the Processing IDE window press "Java"
 5. Click "Add Mode..."
 6. Search in the Modes tab "python"
 7. Install "Python Mode for Processing 3"
-8. You may now go to File > Open... > *EEG_main_python.pyde*
+8. You may now go to File > Open... > *Processing_Python.pyde*
 
 ## Contributions
 All contributions should be referenced to the [CONTRIBUTIONS](https://github.com/cwnicoletti/Electroencephalogram-Project/blob/master/CONTRIBUTING.md) file before making a pull request.
