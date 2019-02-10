@@ -15,7 +15,7 @@
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file leaf-file-name="Raspberry-Pi.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Raspberry-Pi.py">
+        <entry file="file://$PROJECT_DIR$/../Pycharm_Python/Raspberry-Pi.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="68">
               <caret line="5" selection-start-line="5" selection-end-line="5" />
@@ -27,10 +27,10 @@
         </entry>
       </file>
       <file leaf-file-name="Test.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Test.py">
+        <entry file="file://$PROJECT_DIR$/../Pycharm_Python/Test.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="238">
-              <caret line="15" lean-forward="true" selection-start-line="15" selection-end-line="15" />
+              <caret line="15" selection-start-line="15" selection-end-line="15" />
               <folding>
                 <element signature="e#0#31#0" expanded="true" />
               </folding>
@@ -39,10 +39,10 @@
         </entry>
       </file>
       <file leaf-file-name="Signal-Processing-Interface.py" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/Signal-Processing-Interface.py">
+        <entry file="file://$PROJECT_DIR$/../Pycharm_Python/Signal-Processing-Interface.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="68">
-              <caret line="10" column="15" lean-forward="true" selection-start-line="10" selection-start-column="15" selection-end-line="10" selection-end-column="15" />
+            <state relative-caret-position="312">
+              <caret line="137" column="56" lean-forward="true" selection-start-line="137" selection-start-column="56" selection-end-line="137" selection-end-column="56" />
               <folding>
                 <element signature="e#0#30#0" expanded="true" />
               </folding>
@@ -60,6 +60,13 @@
     </option>
   </component>
   <component name="FindInProjectRecents">
+    <findStrings>
+      <find>window</find>
+      <find>time_do</find>
+      <find>absolute</find>
+      <find>absolute_bad</find>
+      <find>sum</find>
+    </findStrings>
     <replaceStrings>
       <replace />
     </replaceStrings>
@@ -74,12 +81,13 @@
         <option value="$PROJECT_DIR$/Test.py" />
         <option value="$PROJECT_DIR$/Signal-Processing-Interface.py" />
         <option value="$PROJECT_DIR$/Signal_Processing_Interface_Olivia.py" />
+        <option value="$PROJECT_DIR$/../Pycharm_Python/Signal-Processing-Interface.py" />
       </list>
     </option>
   </component>
-  <component name="ProjectFrameBounds" extendedState="7">
+  <component name="ProjectFrameBounds" extendedState="6">
     <option name="x" value="70" />
-    <option name="width" value="940" />
+    <option name="width" value="939" />
     <option name="height" value="1090" />
   </component>
   <component name="ProjectView">
@@ -93,7 +101,7 @@
           <expand>
             <path>
               <item name="EEG-BCI" type="b2602c69:ProjectViewProjectNode" />
-              <item name="EEG-BCI" type="462c0819:PsiDirectoryNode" />
+              <item name="Pycharm_Python" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -199,8 +207,10 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="57" y="-7" width="1486" height="878" extended-state="6" />
+    <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.10351967" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.10351967" />
+      <window_info anchor="bottom" id="Find" order="1" weight="0.32988358" />
       <window_info anchor="bottom" id="Version Control" order="8" show_stripe_button="false" />
       <window_info anchor="bottom" id="Python Console" order="13" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
@@ -221,7 +231,6 @@
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="right" id="SciView" order="4" />
       <window_info anchor="bottom" id="File Transfer" order="9" visible="true" weight="0.13953489" />
-      <window_info anchor="bottom" id="Find" order="1" />
       <window_info anchor="bottom" id="Terminal" order="11" />
     </layout>
   </component>
@@ -231,8 +240,13 @@
   <component name="VcsContentAnnotationSettings">
     <option name="myLimit" value="2678400000" />
   </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <option name="time" value="3" />
+    </breakpoint-manager>
+  </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/Raspberry-Pi.py">
+    <entry file="file://$PROJECT_DIR$/../Pycharm_Python/Raspberry-Pi.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="68">
           <caret line="5" selection-start-line="5" selection-end-line="5" />
@@ -242,7 +256,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Test.py">
+    <entry file="file://$PROJECT_DIR$/../Pycharm_Python/Test.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="238">
           <caret line="15" lean-forward="true" selection-start-line="15" selection-end-line="15" />
@@ -252,7 +266,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Signal-Processing-Interface.py">
+    <entry file="file://$PROJECT_DIR$/../Pycharm_Python/Signal-Processing-Interface.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="187">
           <caret line="13" column="33" lean-forward="true" selection-end-line="315" />
@@ -262,7 +276,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Raspberry-Pi.py">
+    <entry file="file://$PROJECT_DIR$/../Pycharm_Python/Raspberry-Pi.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="85">
           <caret line="5" selection-start-line="5" selection-end-line="5" />
@@ -272,7 +286,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Signal-Processing-Interface.py">
+    <entry file="file://$PROJECT_DIR$/../Pycharm_Python/Signal-Processing-Interface.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1139">
           <caret line="67" selection-start-line="67" selection-end-line="67" />
@@ -282,7 +296,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Test.py">
+    <entry file="file://$PROJECT_DIR$/../Pycharm_Python/Test.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="102">
           <caret line="6" column="15" selection-start-line="6" selection-start-column="15" selection-end-line="6" selection-end-column="15" />
@@ -292,7 +306,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Raspberry-Pi.py">
+    <entry file="file://$PROJECT_DIR$/../Pycharm_Python/Raspberry-Pi.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="85">
           <caret line="5" selection-start-line="5" selection-end-line="5" />
@@ -302,7 +316,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Signal-Processing-Interface.py">
+    <entry file="file://$PROJECT_DIR$/../Pycharm_Python/Signal-Processing-Interface.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1139">
           <caret line="67" selection-start-line="67" selection-end-line="67" />
@@ -312,14 +326,14 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Test.py">
+    <entry file="file://$PROJECT_DIR$/../Pycharm_Python/Test.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="272">
           <caret line="16" selection-start-line="16" selection-end-line="16" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Raspberry-Pi.py">
+    <entry file="file://$PROJECT_DIR$/../Pycharm_Python/Raspberry-Pi.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="85">
           <caret line="5" selection-start-line="5" selection-end-line="5" />
@@ -329,7 +343,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Signal-Processing-Interface.py">
+    <entry file="file://$PROJECT_DIR$/../Pycharm_Python/Signal-Processing-Interface.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1139">
           <caret line="67" selection-start-line="67" selection-end-line="67" />
@@ -339,14 +353,14 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Test.py">
+    <entry file="file://$PROJECT_DIR$/../Pycharm_Python/Test.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="34">
           <caret line="2" column="7" selection-start-line="2" selection-start-column="7" selection-end-line="2" selection-end-column="7" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Raspberry-Pi.py">
+    <entry file="file://$PROJECT_DIR$/../Pycharm_Python/Raspberry-Pi.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="85">
           <caret line="5" selection-start-line="5" selection-end-line="5" />
@@ -356,7 +370,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Signal-Processing-Interface.py">
+    <entry file="file://$PROJECT_DIR$/../Pycharm_Python/Signal-Processing-Interface.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1139">
           <caret line="67" selection-start-line="67" selection-end-line="67" />
@@ -366,14 +380,14 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Test.py">
+    <entry file="file://$PROJECT_DIR$/../Pycharm_Python/Test.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="34">
           <caret line="2" column="7" selection-start-line="2" selection-start-column="7" selection-end-line="2" selection-end-column="7" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Raspberry-Pi.py">
+    <entry file="file://$PROJECT_DIR$/../Pycharm_Python/Raspberry-Pi.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="119">
           <caret line="7" lean-forward="true" selection-start-line="7" selection-end-line="7" />
@@ -383,7 +397,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Signal-Processing-Interface.py">
+    <entry file="file://$PROJECT_DIR$/../Pycharm_Python/Signal-Processing-Interface.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="17">
           <caret line="1" column="24" lean-forward="true" selection-start-line="1" selection-start-column="24" selection-end-line="1" selection-end-column="24" />
@@ -393,7 +407,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Raspberry-Pi.py">
+    <entry file="file://$PROJECT_DIR$/../Pycharm_Python/Raspberry-Pi.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="68">
           <caret line="5" selection-start-line="5" selection-end-line="5" />
@@ -403,10 +417,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Test.py">
+    <entry file="file://$PROJECT_DIR$/../Pycharm_Python/Test.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="238">
-          <caret line="15" lean-forward="true" selection-start-line="15" selection-end-line="15" />
+          <caret line="15" selection-start-line="15" selection-end-line="15" />
           <folding>
             <element signature="e#0#31#0" expanded="true" />
           </folding>
@@ -414,10 +428,10 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/Signal_Processing_Interface_Olivia.py" />
-    <entry file="file://$PROJECT_DIR$/Signal-Processing-Interface.py">
+    <entry file="file://$PROJECT_DIR$/../Pycharm_Python/Signal-Processing-Interface.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="68">
-          <caret line="10" column="15" lean-forward="true" selection-start-line="10" selection-start-column="15" selection-end-line="10" selection-end-column="15" />
+        <state relative-caret-position="312">
+          <caret line="137" column="56" lean-forward="true" selection-start-line="137" selection-start-column="56" selection-end-line="137" selection-end-column="56" />
           <folding>
             <element signature="e#0#30#0" expanded="true" />
           </folding>
