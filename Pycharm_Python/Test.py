@@ -14,7 +14,7 @@ def butter_lowpass_filter(data, cutoff, fs, order=1):
     return y
 
 
-#plt.plot(4, 6)
+# plt.plot(4, 6)
 plt.plot([1,2,3,4])
 plt.ylabel('some numbers')
 

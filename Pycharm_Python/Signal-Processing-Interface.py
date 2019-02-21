@@ -62,6 +62,7 @@ stream = p.open(format=pyaudio.paInt16,
                 input=True,
                 frames_per_buffer=buffer_size)
 
+
 def setup():
     # Set drawing parameters
     fft_height = window_height - 200
