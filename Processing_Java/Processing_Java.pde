@@ -75,11 +75,15 @@ void setup() {
     // Initialize 2D array of averages for running average calculation
     averages = new float[averageBins][averageLength];
     for (int i = 0; i < averageBins; i++) {
-        for (int j = 0; j < averageLength; j++) { averages[i][j] = 0; }
+        for (int j = 0; j < averageLength; j++) { 
+        averages[i][j] = 0; 
+      }
     }
     
     // Initialize array used for input
-    for (int i = 0; i < 240; i++) { timeSignal[i] = 0; }
+    for (int i = 0; i < 240; i++) { 
+        timeSignal[i] = 0; 
+       }
 
     // Set drawing parameters
     FFTheight = windowHeight - 200;
@@ -230,7 +234,9 @@ void drawSignalData() {
         }
     }
     leftedge = leftedge + 1; // Move left by one, moving the spectrogram to the left
-    if (leftedge == colmax) { leftedge = 0; } // Wraps around in a circular array
+    if (leftedge == colmax) { 
+        leftedge = 0; // Wraps around in a circular array
+      }
     
     for (int i = 0; i < windowWidth - 1; i++) {
 

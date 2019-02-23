@@ -11,6 +11,7 @@
  float[] alphaAverages;
  int averageLength = 50; //averages about the last 5 seconds worth of data
  int counter = 0;
+ int hit = 0;
  static int alphaCenter = 9;
  static int alphaBandwidth = 2; //really bandwidth divided by 2
  
@@ -51,7 +52,6 @@ void setup(){
   
   //initialize minim, as well as our alpha filter
   minim = new Minim(this);
-  minim.debugOn();
   alphaFilter = new BandPass(alphaCenter / scaleFreq, alphaBandwidth / scaleFreq, 44100);
   
   // Define minim input with filters
@@ -99,6 +99,7 @@ void draw(){
   
   text("absoluteBadDataFlag = " + absoluteBadDataFlag, windowWidth - 170, 20);
   text("averageBadDataFlag = " + averageBadDataFlag, windowWidth - 170, 40);
+
   
   int lowBound = fft.freqToIndex(alphaCenter - alphaBandwidth);
   int hiBound = fft.freqToIndex(alphaCenter + alphaBandwidth);
@@ -113,7 +114,7 @@ void draw(){
   
   avg /= (hiBound - lowBound + 1);
   //scale averages a bit
-  avg *= .3775;
+  avg *= 3.3775;
   
   if (absoluteBadDataFlag == false && averageBadDataFlag == false){
     alphaAverages[counter%averageLength] = avg;
@@ -136,7 +137,8 @@ void draw(){
     paddleHeight = height - paddleLength;
   if (paddleHeight < 100)
     paddleHeight = 100;
-
+    
+  text("Alpha waves: " + paddleHeight, windowWidth - 320, 220);
   rect(5,paddleHeight,paddleWidth,paddleLength);
   
   ballpos[0] += ballvel[0];
@@ -150,6 +152,7 @@ void draw(){
     ballvel[0] *= -1;
     float paddleCenter = (paddleHeight + (paddleHeight + paddleLength)) / 2;
     ballvel[1] = -(paddleCenter - ballpos[1])/15;
+    hit += 1;
   }
   //collision detection with opposite wall
   if (ballpos[0] + ballrad > width){
@@ -159,7 +162,7 @@ void draw(){
   if (ballpos[1] < 100 + ballrad || ballpos[1] > height - ballrad){
     ballvel[1] *= -1;
   }
-  
+  text("# of hits: " + hit, windowWidth - 290, 280);
   counter++;
 }
 
@@ -169,5 +172,13 @@ void keyPressed(){
     ballpos[1] = 250;
     ballvel[0] = -ballspeed;
     ballvel[1] = 0;
+    hit = 0;
   }
+}
+
+// Always close Minim audio classes when you are done with them
+void stop() { 
+    in.close();
+    minim.stop();
+    super.stop();
 }
