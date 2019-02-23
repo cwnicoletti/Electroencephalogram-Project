@@ -103,8 +103,7 @@ void setup() {
     betaFilter = new BandPass(betaCenter / scaleFreq, betaBandwidth / scaleFreq, 44100);
     alphaFilter = new BandPass(alphaCenter / scaleFreq, alphaBandwidth / scaleFreq, 44100);
     
-    // Turn on debug messages
-    minim.debugOn();
+    // Test!
     
     // Define minim input with filters
     // (type, bufferSize, sampleRate, bitDepth)
