@@ -3,19 +3,20 @@ This project is based around the construction and modifcation of an instructable
 
 ## Getting started
 1. Download Processing 3 at https://processing.org/download/
-2. Clone the repository in your command line and change your directory to the repository
+2. Download Minim at https://github.com/ddf/Minim/releases/tag/v2.2.2
+3. Clone the repository in your command line and change your directory to the repository
 ```
 git clone https://github.com/cwnicoletti/Electroencephalogram-Project/
 cd Electroenceophalogram-Project
 ```
-3. Open Processing
-4. File > Open... > *Processing_Java.pde*
+4. Open Processing
+5. File > Open... > *Processing_Java.pde*
 ### If attempting to open Processing_Python.pyde
-4. In the upper-right-hand corner of the Processing IDE window press "Java"
-5. Click "Add Mode..."
-6. Search in the Modes tab "python"
-7. Install "Python Mode for Processing 3"
-8. You may now go to File > Open... > *Processing_Python.pyde*
+5. In the upper-right-hand corner of the Processing IDE window press "Java"
+6. Click "Add Mode..."
+7. Search in the Modes tab "python"
+8. Install "Python Mode for Processing 3"
+9. You may now go to File > Open... > *Processing_Python.pyde*
 
 ## Contributions
 All contributions should be referenced to the [CONTRIBUTIONS](https://github.com/cwnicoletti/Electroencephalogram-Project/blob/master/CONTRIBUTING.md) file before making a pull request.
