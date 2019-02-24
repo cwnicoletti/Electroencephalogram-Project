@@ -102,8 +102,8 @@ void setup() {
     notch = new NotchFilter(60, 21.533203125, 44100);
     betaFilter = new BandPass(betaCenter / scaleFreq, betaBandwidth / scaleFreq, 44100);
     alphaFilter = new BandPass(alphaCenter / scaleFreq, alphaBandwidth / scaleFreq, 44100);
-    
-    // Test!
+
+    println("Hello world!");
     
     // Define minim input with filters
     // (type, bufferSize, sampleRate, bitDepth)
