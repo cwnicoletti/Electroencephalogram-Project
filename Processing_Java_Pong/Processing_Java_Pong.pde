@@ -8,6 +8,7 @@
  //-------------------------Initialization of Variables--------------------------------------
  int paddleWidth;
  int paddleLength;
+ boolean inplay;
  float[] alphaAverages;
  int averageLength = 50; //averages about the last 5 seconds worth of data
  int counter = 0;
@@ -163,17 +164,25 @@ void draw(){
     ballvel[1] *= -1;
   }
   text("# of hits: " + hit, windowWidth - 290, 280);
-  counter++;
-}
-
-void keyPressed(){
-  if (key == ' '){
+  
+  inplay = false;
+  
+  if (ballvel[0] == -ballspeed) {
+    inplay = true;
+  }
+  
+  if (paddleHeight >= 220 && hit == 0 && inplay == false || ballpos[0] < 0){
     ballpos[0] = 250;
     ballpos[1] = 250;
     ballvel[0] = -ballspeed;
     ballvel[1] = 0;
     hit = 0;
   }
+  
+  counter++;
+}
+
+void keyPressed(){
 }
 
 // Always close Minim audio classes when you are done with them
