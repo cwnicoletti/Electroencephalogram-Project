@@ -1,5 +1,3 @@
-//Shefali
-
 //---------------------------------Imports-------------------------------------------------
  //grab the libraries we need
  import ddf.minim.*;
