@@ -1,6 +1,6 @@
 //---------------------------------Imports-------------------------------------------------
  //grab the libraries we need
- import ddf.minim.*;
+ import ddf.minim.*; //yo we need to find some new libraries here or something
  import ddf.minim.signals.*;
  import ddf.minim.analysis.*;
  import ddf.minim.effects.*;
