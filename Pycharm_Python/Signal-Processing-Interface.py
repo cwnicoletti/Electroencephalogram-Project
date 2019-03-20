@@ -1,4 +1,3 @@
-# Minim branch
 from scipy.fftpack import fftn
 from scipy import signal
 import pyaudio

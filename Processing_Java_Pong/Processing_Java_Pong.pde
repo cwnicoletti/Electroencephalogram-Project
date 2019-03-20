@@ -1,6 +1,3 @@
-//Jarod
-//Cameron
-//Josh
 //---------------------------------Imports-------------------------------------------------
  //grab the libraries we need
  import ddf.minim.*; //yo we need to find some new libraries here or something
