@@ -1,0 +1,22 @@
+from Pycharm_Python import Audio_Class
+
+key_input = False
+
+
+def call_audio():
+    return Audio_Class.AudioInput().listen()
+
+
+def stop():
+    return Audio_Class.AudioInput().stop()
+
+
+def repeat():
+    try:
+        call_audio()
+    except KeyboardInterrupt:
+        stop()
+
+
+if __name__ == '__main__':
+    repeat()
