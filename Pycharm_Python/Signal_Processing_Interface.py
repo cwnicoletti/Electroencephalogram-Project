@@ -1,7 +1,5 @@
 from Pycharm_Python import Audio_Class
 
-key_input = False
-
 
 def call_audio():
     return Audio_Class.AudioInput().listen()
