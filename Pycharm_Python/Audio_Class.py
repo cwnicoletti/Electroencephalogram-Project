@@ -4,11 +4,11 @@ import numpy as np
 from scipy import signal
 import matplotlib.pyplot as plt
 
-threshold = 40  # decibel threshold
+threshold = 0  # decibel threshold
 FORMAT = pyaudio.paInt16
 NUM_CHANNELS = 1
 RATE = 44100
-INPUT_BLOCK_TIME = 0.3
+INPUT_BLOCK_TIME = 0.05
 BUFFER_RATE = int(RATE * INPUT_BLOCK_TIME)
 
 
@@ -56,28 +56,29 @@ class AudioInput(object):
         return stream
 
     def process_block(self, snd_block):
-        # f, t, sxx returns a 3292 x 129 x 129 array of values
+        # f, t, sxx returns a 129 x 3292 x 129 array of values
         f, t, sxx = signal.spectrogram(snd_block, RATE, nperseg=64, nfft=256, noverlap=60)
         decibels = 10 * np.log10(sxx)
         plt.pcolormesh(t, f, decibels, cmap='inferno')
-        print('x-axis: {}'.format(len(t)))
-        print('y-axis: {}'.format(len(f)))
-        print('z-axis: {}'.format(len(decibels)))
         plt.show()
+        plt.pause(0.01)
         self.plot_counter += 1
 
     def listen(self):
         try:
-            raw_block = self.stream.read(BUFFER_RATE, exception_on_overflow=False)
-            count = len(raw_block) / 2
-            format = '%dh' % count
-            snd_block = np.array(struct.unpack(format, raw_block))
+            plt.ion()
+            while True:
+                raw_block = self.stream.read(BUFFER_RATE, exception_on_overflow=True)
+                count = len(raw_block) / 2
+                format = '%dh' % count
+                snd_block = np.array(struct.unpack(format, raw_block))
+                amplitude = get_rms(snd_block)
+
+                if amplitude > self.threshold:
+                    self.process_block(snd_block)
+                else:
+                    pass
+
         except Exception as e:
             print('Error recording: {}'.format(e))
             return
-
-        amplitude = get_rms(snd_block)
-        if amplitude > self.threshold:
-            self.process_block(snd_block)
-        else:
-            pass

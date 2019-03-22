@@ -14,6 +14,7 @@ def repeat():
         call_audio()
     except KeyboardInterrupt:
         stop()
+        return
 
 
 if __name__ == '__main__':
