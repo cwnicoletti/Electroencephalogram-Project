@@ -56,12 +56,13 @@ class AudioInput(object):
         return stream
 
     def process_block(self, snd_block):
+        # f, t, sxx returns a 3292 x 129 x 129 array of values
         f, t, sxx = signal.spectrogram(snd_block, RATE, nperseg=64, nfft=256, noverlap=60)
         decibels = 10 * np.log10(sxx)
         plt.pcolormesh(t, f, decibels, cmap='inferno')
-        print('x-axis: {}'.format(t))
-        print('y-axis: {}'.format(f))
-        print('z-axis: {}'.format(decibels))
+        print('x-axis: {}'.format(len(t)))
+        print('y-axis: {}'.format(len(f)))
+        print('z-axis: {}'.format(len(decibels)))
         plt.show()
         self.plot_counter += 1
 
