@@ -8,7 +8,7 @@ threshold = 0  # decibel threshold
 FORMAT = pyaudio.paInt16
 NUM_CHANNELS = 1
 RATE = 44100
-INPUT_BLOCK_TIME = 0.05
+INPUT_BLOCK_TIME = 0.15
 BUFFER_RATE = int(RATE * INPUT_BLOCK_TIME)
 
 
@@ -56,19 +56,19 @@ class AudioInput(object):
         return stream
 
     def process_block(self, snd_block):
-        # f, t, sxx returns a 129 x 3292 x 129 array of values
         f, t, sxx = signal.spectrogram(snd_block, RATE, nperseg=64, nfft=256, noverlap=60)
         decibels = 10 * np.log10(sxx)
         plt.pcolormesh(t, f, decibels, cmap='inferno')
         plt.show()
         plt.pause(0.01)
+        plt.clf()
         self.plot_counter += 1
 
     def listen(self):
         try:
             plt.ion()
             while True:
-                raw_block = self.stream.read(BUFFER_RATE, exception_on_overflow=True)
+                raw_block = self.stream.read(BUFFER_RATE, exception_on_overflow=False)
                 count = len(raw_block) / 2
                 format = '%dh' % count
                 snd_block = np.array(struct.unpack(format, raw_block))
