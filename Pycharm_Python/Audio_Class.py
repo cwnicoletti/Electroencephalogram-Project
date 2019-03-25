@@ -3,12 +3,15 @@ import struct
 import numpy as np
 from scipy import signal
 import matplotlib.pyplot as plt
+from matplotlib.widgets import Button
 
 FORMAT = pyaudio.paInt16
 NUM_CHANNELS = 1
 RATE = 44100
-INPUT_BLOCK_TIME = 0.15
+INPUT_BLOCK_TIME = 0.05
 BUFFER_RATE = int(RATE * INPUT_BLOCK_TIME)
+
+escape = False
 
 
 def get_rms(block):
@@ -21,12 +24,28 @@ def process_block(snd_block):
     return t, f, decibels
 
 
-def plot_spec(x, y, z):
-    plt.pcolormesh(x, y, z, cmap='inferno')
-    plt.show()
-    plt.pause(0.05)
+def closing_funcs(self):
+    global escape
+    plt.ioff()
     plt.clf()
     plt.cla()
+    plt.close()
+    AudioInput().stop()
+    escape = True
+
+
+def plot_but():
+    axclose = plt.axes([0.81, 0.02, 0.1, 0.075])
+    exit_spec = Button(axclose, "Close")
+    exit_spec.on_clicked(closing_funcs)
+    axclose.button = exit_spec
+
+
+def plot_spec(x, y, z):
+        plt.pcolormesh(x, y, z, cmap='inferno')
+        plot_but()
+        plt.pause(0.05)
+        plt.clf()
 
 
 class AudioInput(object):
@@ -70,12 +89,18 @@ class AudioInput(object):
         try:
             plt.ion()
             while True:
+                if escape is True:
+                    return
+                import time
+                time1 = time.time()
                 raw_block = self.stream.read(BUFFER_RATE, exception_on_overflow=False)
                 count = len(raw_block) / 2
                 format = '%dh' % count
                 snd_block = np.array(struct.unpack(format, raw_block))
-                time, frequency, intensity = process_block(snd_block)
-                plot_spec(time, frequency, intensity)
+                timez, frequency, intensity = process_block(snd_block)
+                plot_spec(timez, frequency, intensity)
+                time2 = time.time()
+                print(time2 - time1)
 
         except Exception as e:
             print('Error recording: {}'.format(e))
