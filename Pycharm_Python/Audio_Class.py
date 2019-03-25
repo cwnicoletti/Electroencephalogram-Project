@@ -4,7 +4,6 @@ import numpy as np
 from scipy import signal
 import matplotlib.pyplot as plt
 
-threshold = 0  # decibel threshold
 FORMAT = pyaudio.paInt16
 NUM_CHANNELS = 1
 RATE = 44100
@@ -16,12 +15,24 @@ def get_rms(block):
     return np.sqrt(np.mean(np.square(block)))
 
 
+def process_block(snd_block):
+    f, t, sxx = signal.spectrogram(snd_block, RATE, nperseg=64, nfft=256, noverlap=60)
+    decibels = 10 * np.log10(sxx)
+    return t, f, decibels
+
+
+def plot_spec(x, y, z):
+    plt.pcolormesh(x, y, z, cmap='inferno')
+    plt.show()
+    plt.pause(0.05)
+    plt.clf()
+    plt.cla()
+
+
 class AudioInput(object):
     def __init__(self):
         self.pa = pyaudio.PyAudio()
         self.stream = self.get_mic_stream()
-        self.threshold = threshold
-        self.plot_counter = 0
 
     def stop(self):
         self.stream.close()
@@ -55,15 +66,6 @@ class AudioInput(object):
 
         return stream
 
-    def process_block(self, snd_block):
-        f, t, sxx = signal.spectrogram(snd_block, RATE, nperseg=64, nfft=256, noverlap=60)
-        decibels = 10 * np.log10(sxx)
-        plt.pcolormesh(t, f, decibels, cmap='inferno')
-        plt.show()
-        plt.pause(0.01)
-        plt.clf()
-        self.plot_counter += 1
-
     def listen(self):
         try:
             plt.ion()
@@ -72,12 +74,8 @@ class AudioInput(object):
                 count = len(raw_block) / 2
                 format = '%dh' % count
                 snd_block = np.array(struct.unpack(format, raw_block))
-                amplitude = get_rms(snd_block)
-
-                if amplitude > self.threshold:
-                    self.process_block(snd_block)
-                else:
-                    pass
+                time, frequency, intensity = process_block(snd_block)
+                plot_spec(time, frequency, intensity)
 
         except Exception as e:
             print('Error recording: {}'.format(e))
