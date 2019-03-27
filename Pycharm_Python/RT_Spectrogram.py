@@ -1,5 +1,6 @@
-import pyaudio
+import csv
 import struct
+import pyaudio
 import numpy as np
 from scipy import signal
 import matplotlib.pyplot as plt
@@ -30,10 +31,27 @@ def process_block(snd_block):
     f, t, sxx = signal.spectrogram(snd_block, RATE, nperseg=64, nfft=256, noverlap=50)
     decibels = 10 * np.log10(sxx)
     f = Low_Pass_Filter.butter_low_pass_filter(f, cutoff, fs, order)
-    print(len(t))
-    print(len(f))
-    print(len(decibels))
     return t, f, decibels
+
+
+def saving_funcs(self, x, y, z):
+    # plots upward column, then right
+    count = 0
+    size = len(x) * len(y)
+    new_row = np.zeros(size)
+    for i in range(len(x)):
+            for j in range(len(y)):
+                new_row[count] = z[j][i]
+                count += 1
+    with open('brain_data.csv', 'a+') as brain_data:
+        brain_csv = csv.writer(brain_data, delimiter=',', quotechar='"', lineterminator = '\n', quoting=csv.QUOTE_MINIMAL)
+        brain_csv.writerow(new_row)
+
+def plot_but_save():
+    axsave = plt.axes([0.1, 0.02, 0.1, 0.075])
+    save_spec = Button(axsave, "Save")
+    save_spec.on_clicked(saving_funcs)
+    axsave.button = save_spec
 
 
 def closing_funcs(self):
@@ -46,7 +64,7 @@ def closing_funcs(self):
     escape = True
 
 
-def plot_but():
+def plot_but_close():
     axclose = plt.axes([0.81, 0.02, 0.1, 0.075])
     exit_spec = Button(axclose, "Close")
     exit_spec.on_clicked(closing_funcs)
@@ -54,12 +72,9 @@ def plot_but():
 
 
 def plot_spec(x, y, z):
-    print('x values: ', x)
-    print('y values: ', y)
-    print('z values: ', z)
     plt.pcolormesh(x, y, z, cmap='inferno')
-    plot_but()
-    plt.pause(0.05)
+    plot_but_save(x, y, z)
+    plot_but_close()
     plt.clf()
 
 
@@ -111,8 +126,8 @@ class AudioInput(object):
                 count = len(raw_block) / 2
                 format = '%dh' % count
                 snd_block = np.array(struct.unpack(format, raw_block))
-                timez, frequency, intensity = process_block(snd_block)
-                plot_spec(timez, frequency, intensity)
+                time, frequency, intensity = process_block(snd_block)
+                plot_spec(time, frequency, intensity)
 
         except Exception as e:
             print('Error recording: {}'.format(e))
