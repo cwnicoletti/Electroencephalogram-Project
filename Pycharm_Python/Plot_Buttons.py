@@ -1,5 +1,3 @@
-
-
 import csv
 import numpy as np
 import matplotlib.pyplot as plt
@@ -41,26 +39,31 @@ def closing_funcs(self):
 
 def recording_funcs(self):
     global x, y, z
+    plt.clf()
     x, y, z = Data_Collection_Spectrogram.process_block()
     Data_Collection_Spectrogram.plot_spec(x, y, z)
-    plt.show()
 
     plot_but_record()
     plot_but_save()
     plot_but_close()
+    print("Done")
 
 
 def saving_funcs(self):
+    print("Saving...")
     count = 0
     size = len(x) * len(y)
     new_row = np.zeros(size)
-    for i in range(len(x)):
-            for j in range(len(y)):
-                new_row[count] = z[j][i]
+    for i in range(len(y)):
+        for j in range(len(x)):
+                new_row[count] = z[i][j]
                 count += 1
+    print("...")
     with open('brain_data.csv', 'a+') as brain_data:
         brain_csv = csv.writer(brain_data, delimiter=',', quotechar='"', lineterminator='\n', quoting=csv.QUOTE_MINIMAL)
         brain_csv.writerow(new_row)
-
+    print("...")
     plot_but_record()
     plot_but_close()
+
+    print("Saved")

@@ -22,7 +22,9 @@ def get_rms(block):
 
 
 def process_block():
+    print("Starting Recording...")
     raw_block = AudioInput().stream.read(BUFFER_RATE, exception_on_overflow=False)
+    print("End")
     count = len(raw_block) / 2
     format = '%dh' % count
     snd_block = np.array(struct.unpack(format, raw_block))
@@ -30,6 +32,7 @@ def process_block():
     # nperg=178, noverlap=8: gives 129 x 129 x 129
     # nperg=64, noverlap=60: gives 5197 x 129 x 129
     # nperg=64, noverlap=50: gives 1571 x 129 x 129 -- middle-point, will use
+    print("Creating Spectrogram")
     f, t, sxx = signal.spectrogram(snd_block, RATE, nperseg=64, nfft=256, noverlap=50)
     try:
         decibels = 10 * np.log10(sxx)
@@ -43,9 +46,7 @@ def process_block():
 
 
 def plot_spec(x, y, z):
-    plt.clf()
     plt.pcolormesh(x, y, z, cmap='inferno')
-    return x, y, z
 
 
 def listen():
