@@ -23,8 +23,9 @@ def get_rms(block):
 
 def process_block():
     print("Starting Recording...")
-    raw_block = AudioInput().stream.read(BUFFER_RATE, exception_on_overflow=False)
+    raw_block = AudioInput().get_mic_stream().read(BUFFER_RATE, exception_on_overflow=False)
     print("End")
+    stream.close()
     count = len(raw_block) / 2
     format = '%dh' % count
     snd_block = np.array(struct.unpack(format, raw_block))
@@ -37,11 +38,10 @@ def process_block():
     try:
         decibels = 10 * np.log10(sxx)
     except Exception as e:
-        "Divide by zero error, retrying..."
+        print("Divide by zero error, retrying...")
         process_block()
 
     f = Low_Pass_Filter.butter_low_pass_filter(f, cutoff, fs, order)
-
     return t, f, decibels
 
 
@@ -63,14 +63,10 @@ def listen():
 class AudioInput(object):
     def __init__(self):
         self.pa = pyaudio.PyAudio()
-        self.stream = self.get_mic_stream()
-
-    def stop(self):
-        self.stream.close()
 
     def find_input_device(self):
         device_index = None
-        for i in range(self.pa.get_device_count()):
+        for i in range(pyaudio.PyAudio().get_device_count()):
             device_info = self.pa.get_device_info_by_index(i)
             print('Device {}: {}'.format(i, device_info['name']))
 
@@ -87,7 +83,7 @@ class AudioInput(object):
 
     def get_mic_stream(self):
         device_index = self.find_input_device()
-
+        global stream
         stream = self.pa.open(format=FORMAT,
                               channels=NUM_CHANNELS,
                               rate=RATE,

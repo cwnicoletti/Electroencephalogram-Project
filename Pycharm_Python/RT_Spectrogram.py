@@ -30,7 +30,6 @@ def process_block(snd_block):
     # nperg=64, noverlap=50: gives 1571 x 129 x 129 -- middle-point, will use
     f, t, sxx = signal.spectrogram(snd_block, RATE, nperseg=64, nfft=256, noverlap=50)
     decibels = 10 * np.log10(sxx)
-    f = Low_Pass_Filter.butter_low_pass_filter(f, cutoff, fs, order)
     return t, f, decibels
 
 
@@ -46,6 +45,7 @@ def saving_funcs(self, x, y, z):
     with open('brain_data.csv', 'a+') as brain_data:
         brain_csv = csv.writer(brain_data, delimiter=',', quotechar='"', lineterminator = '\n', quoting=csv.QUOTE_MINIMAL)
         brain_csv.writerow(new_row)
+
 
 def plot_but_save():
     axsave = plt.axes([0.1, 0.02, 0.1, 0.075])
@@ -73,8 +73,9 @@ def plot_but_close():
 
 def plot_spec(x, y, z):
     plt.pcolormesh(x, y, z, cmap='inferno')
-    plot_but_save(x, y, z)
+    plot_but_save()
     plot_but_close()
+    plt.pause(0.05)
     plt.clf()
 
 

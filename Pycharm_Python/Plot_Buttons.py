@@ -1,4 +1,5 @@
 import csv
+import pyaudio
 import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.widgets import Button
@@ -32,14 +33,13 @@ def closing_funcs(self):
     plt.clf()
     plt.cla()
     plt.close()
-    Data_Collection_Spectrogram.AudioInput().stop()
     escape = True
     return
 
 
 def recording_funcs(self):
-    global x, y, z
     plt.clf()
+    global x, y, z
     x, y, z = Data_Collection_Spectrogram.process_block()
     Data_Collection_Spectrogram.plot_spec(x, y, z)
 
@@ -58,8 +58,11 @@ def saving_funcs(self):
         for j in range(len(x)):
                 new_row[count] = z[i][j]
                 count += 1
+    with open('Training_Data/training_the.csv', 'a+') as brain_data:
+        brain_csv = csv.writer(brain_data, delimiter=',', quotechar='"', lineterminator='\n', quoting=csv.QUOTE_MINIMAL)
+        brain_csv.writerow(new_row)
     print("...")
-    with open('brain_data.csv', 'a+') as brain_data:
+    with open('Test_Data/test.csv', 'a+') as brain_data:
         brain_csv = csv.writer(brain_data, delimiter=',', quotechar='"', lineterminator='\n', quoting=csv.QUOTE_MINIMAL)
         brain_csv.writerow(new_row)
     print("...")
