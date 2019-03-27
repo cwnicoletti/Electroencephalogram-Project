@@ -4,11 +4,16 @@ import numpy as np
 from scipy import signal
 import matplotlib.pyplot as plt
 from matplotlib.widgets import Button
+from Pycharm_Python import Low_Pass_Filter
+
+cutoff = 200  # cutoff frequency
+fs = 44100  # sampling frequency
+order = 2  # order of filter
 
 FORMAT = pyaudio.paInt16
 NUM_CHANNELS = 1
 RATE = 44100
-INPUT_BLOCK_TIME = 0.05
+INPUT_BLOCK_TIME = 0.5
 BUFFER_RATE = int(RATE * INPUT_BLOCK_TIME)
 
 escape = False
@@ -19,8 +24,15 @@ def get_rms(block):
 
 
 def process_block(snd_block):
-    f, t, sxx = signal.spectrogram(snd_block, RATE, nperseg=64, nfft=256, noverlap=60)
+    # nperg=178, noverlap=8: gives 129 x 129 x 129
+    # nperg=64, noverlap=60: gives 5197 x 129 x 129
+    # nperg=64, noverlap=50: gives 1571 x 129 x 129 -- middle-point, will use
+    f, t, sxx = signal.spectrogram(snd_block, RATE, nperseg=64, nfft=256, noverlap=50)
     decibels = 10 * np.log10(sxx)
+    f = Low_Pass_Filter.butter_low_pass_filter(f, cutoff, fs, order)
+    print(len(t))
+    print(len(f))
+    print(len(decibels))
     return t, f, decibels
 
 
@@ -42,10 +54,13 @@ def plot_but():
 
 
 def plot_spec(x, y, z):
-        plt.pcolormesh(x, y, z, cmap='inferno')
-        plot_but()
-        plt.pause(0.05)
-        plt.clf()
+    print('x values: ', x)
+    print('y values: ', y)
+    print('z values: ', z)
+    plt.pcolormesh(x, y, z, cmap='inferno')
+    plot_but()
+    plt.pause(0.05)
+    plt.clf()
 
 
 class AudioInput(object):
@@ -91,16 +106,13 @@ class AudioInput(object):
             while True:
                 if escape is True:
                     return
-                import time
-                time1 = time.time()
+
                 raw_block = self.stream.read(BUFFER_RATE, exception_on_overflow=False)
                 count = len(raw_block) / 2
                 format = '%dh' % count
                 snd_block = np.array(struct.unpack(format, raw_block))
                 timez, frequency, intensity = process_block(snd_block)
                 plot_spec(timez, frequency, intensity)
-                time2 = time.time()
-                print(time2 - time1)
 
         except Exception as e:
             print('Error recording: {}'.format(e))

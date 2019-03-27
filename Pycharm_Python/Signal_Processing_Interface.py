@@ -1,5 +1,4 @@
-from Pycharm_Python import Audio_Class
-
+from Pycharm_Python import RT_Spectrogram
 
 if __name__ == '__main__':
-    Audio_Class.AudioInput().listen()
+    RT_Spectrogram.AudioInput().listen()
