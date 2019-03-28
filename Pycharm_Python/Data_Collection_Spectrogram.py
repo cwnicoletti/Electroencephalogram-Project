@@ -35,11 +35,14 @@ def process_block():
     # nperg=64, noverlap=50: gives 1571 x 129 x 129 -- middle-point, will use
     print("Creating Spectrogram")
     f, t, sxx = signal.spectrogram(snd_block, RATE, nperseg=64, nfft=256, noverlap=50)
-    try:
-        decibels = 10 * np.log10(sxx)
-    except Exception as e:
-        print("Divide by zero error, retrying...")
-        process_block()
+
+    with np.errstate(divide='raise'):
+        try:
+            decibels = 10 * np.log10(sxx)
+        except FloatingPointError as e:
+            print("Error processing decibels: {}".format(e))
+            print("Retrying...")
+            return process_block()
 
     f = Low_Pass_Filter.butter_low_pass_filter(f, cutoff, fs, order)
     return t, f, decibels
