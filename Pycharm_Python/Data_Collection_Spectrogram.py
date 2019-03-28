@@ -6,6 +6,7 @@ import matplotlib.pyplot as plt
 from Pycharm_Python import Plot_Buttons
 from Pycharm_Python import Low_Pass_Filter
 
+
 cutoff = 200  # cutoff frequency
 fs = 44100  # sampling frequency
 order = 2  # order of filter
@@ -22,9 +23,18 @@ def get_rms(block):
 
 
 def process_block():
-    print("Starting Recording...")
+    import time
+    print('Starting Recording in...')
+    time.sleep(.5)
+    print('3...')
+    time.sleep(.5)
+    print('2...')
+    time.sleep(.5)
+    print('1...')
+    time.sleep(.5)
+    print("THINK")
     raw_block = AudioInput().get_mic_stream().read(BUFFER_RATE, exception_on_overflow=False)
-    print("End")
+    print('End Recording')
     stream.close()
     count = len(raw_block) / 2
     format = '%dh' % count
@@ -33,15 +43,16 @@ def process_block():
     # nperg=178, noverlap=8: gives 129 x 129 x 129
     # nperg=64, noverlap=60: gives 5197 x 129 x 129
     # nperg=64, noverlap=50: gives 1571 x 129 x 129 -- middle-point, will use
-    print("Creating Spectrogram")
+    print('Creating Spectrogram')
     f, t, sxx = signal.spectrogram(snd_block, RATE, nperseg=64, nfft=256, noverlap=50)
+    print('Finished')
 
     with np.errstate(divide='raise'):
         try:
             decibels = 10 * np.log10(sxx)
         except FloatingPointError as e:
-            print("Error processing decibels: {}".format(e))
-            print("Retrying...")
+            print('Error processing decibels: {}'.format(e))
+            print('Retrying...')
             return process_block()
 
     f = Low_Pass_Filter.butter_low_pass_filter(f, cutoff, fs, order)
@@ -49,7 +60,9 @@ def process_block():
 
 
 def plot_spec(x, y, z):
+    print('Plotting Spectrogram...')
     plt.pcolormesh(x, y, z, cmap='inferno')
+    print('Finished')
 
 
 def listen():

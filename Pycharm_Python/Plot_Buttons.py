@@ -9,14 +9,14 @@ escape = False
 
 def plot_but_record():
     axrecord = plt.axes([0.1, 0.02, 0.1, 0.075])
-    record_spec = Button(axrecord, "Record")
+    record_spec = Button(axrecord, 'Record')
     record_spec.on_clicked(recording_funcs)
     axrecord.button = record_spec
 
 
 def plot_but_save():
     axsave = plt.axes([0.3, 0.02, 0.1, 0.075])
-    save_spec = Button(axsave, "Save")
+    save_spec = Button(axsave, 'Save')
     save_spec.on_clicked(saving_funcs)
     axsave.button = save_spec
 
@@ -24,7 +24,7 @@ def plot_but_save():
 def plot_but_close():
     global escape
     axclose = plt.axes([0.81, 0.02, 0.1, 0.075])
-    exit_spec = Button(axclose, "Close")
+    exit_spec = Button(axclose, 'Close')
     exit_spec.on_clicked(closing_funcs)
     axclose.button = exit_spec
     return escape
@@ -48,11 +48,11 @@ def recording_funcs(self):
     plot_but_record()
     plot_but_save()
     plot_but_close()
-    print("Done")
+    print('Done')
 
 
 def saving_funcs(self):
-    print("Saving...")
+    print('Saving...')
     count = 0
     size = len(x) * len(y)
     new_row = np.zeros(size)
@@ -63,12 +63,12 @@ def saving_funcs(self):
     with open('Training_Data/training_the.csv', 'a+') as brain_data:
         brain_csv = csv.writer(brain_data, delimiter=',', quotechar='"', lineterminator='\n', quoting=csv.QUOTE_MINIMAL)
         brain_csv.writerow(new_row)
-    print("...")
+    print('...')
     with open('Test_Data/test.csv', 'a+') as brain_data:
         brain_csv = csv.writer(brain_data, delimiter=',', quotechar='"', lineterminator='\n', quoting=csv.QUOTE_MINIMAL)
         brain_csv.writerow(new_row)
-    print("...")
+    print('...')
     plot_but_record()
     plot_but_close()
 
-    print("Saved")
+    print('Saved')

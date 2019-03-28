@@ -42,8 +42,8 @@ def process_block():
         try:
             decibels = 10 * np.log10(sxx)
         except FloatingPointError as e:
-            print("Error processing decibels: {}".format(e))
-            print("Retrying...")
+            print('Error processing decibels: {}'.format(e))
+            print('Retrying...')
             return process_block()
 
     f = Low_Pass_Filter.butter_low_pass_filter(f, cutoff, fs, order)
