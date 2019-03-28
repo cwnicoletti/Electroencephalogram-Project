@@ -1,10 +1,10 @@
 import csv
-import pyaudio
 import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.widgets import Button
 from Pycharm_Python import Data_Collection_Spectrogram
 
+escape = False
 
 def plot_but_record():
     axrecord = plt.axes([0.1, 0.02, 0.1, 0.075])
@@ -21,10 +21,12 @@ def plot_but_save():
 
 
 def plot_but_close():
+    global escape
     axclose = plt.axes([0.81, 0.02, 0.1, 0.075])
     exit_spec = Button(axclose, "Close")
     exit_spec.on_clicked(closing_funcs)
     axclose.button = exit_spec
+    return escape
 
 
 def closing_funcs(self):
@@ -34,7 +36,6 @@ def closing_funcs(self):
     plt.cla()
     plt.close()
     escape = True
-    return
 
 
 def recording_funcs(self):
