@@ -6,6 +6,7 @@ from Pycharm_Python import Data_Collection_Spectrogram
 
 escape = False
 
+
 def plot_but_record():
     axrecord = plt.axes([0.1, 0.02, 0.1, 0.075])
     record_spec = Button(axrecord, "Record")
@@ -31,11 +32,11 @@ def plot_but_close():
 
 def closing_funcs(self):
     global escape
+    escape = True
     plt.ioff()
     plt.clf()
     plt.cla()
     plt.close()
-    escape = True
 
 
 def recording_funcs(self):

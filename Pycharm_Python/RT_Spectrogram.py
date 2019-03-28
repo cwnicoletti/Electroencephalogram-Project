@@ -17,7 +17,6 @@ RATE = 44100
 INPUT_BLOCK_TIME = 0.5
 BUFFER_RATE = int(RATE * INPUT_BLOCK_TIME)
 
-global escape
 escape = False
 
 
@@ -51,27 +50,21 @@ def process_block():
     return t, f, decibels
 
 
-def saving_funcs(self, x, y, z):
-    # plots upward column, then right
-    count = 0
-    size = len(x) * len(y)
-    new_row = np.zeros(size)
-    for i in range(len(x)):
-            for j in range(len(y)):
-                new_row[count] = z[j][i]
-                count += 1
-    with open('brain_data.csv', 'a+') as brain_data:
-        brain_csv = csv.writer(brain_data, delimiter=',', quotechar='"', lineterminator = '\n', quoting=csv.QUOTE_MINIMAL)
-        brain_csv.writerow(new_row)
+def listen():
+    while True:
+        if escape is True:
+            return
+
+        time, frequency, intensity = process_block()
+        plot_spec(time, frequency, intensity)
 
 
 def plot_spec(x, y, z):
     global escape
     plt.pcolormesh(x, y, z, cmap='inferno')
     escape = Plot_Buttons.plot_but_close()
-    plt.pause(0.05)
+    plt.pause(0.02)
     plt.clf()
-    return escape
 
 
 class AudioInput(object):
@@ -107,11 +100,3 @@ class AudioInput(object):
                               frames_per_buffer=BUFFER_RATE)
 
         return stream
-
-    def listen(self):
-        while True:
-            if escape is True:
-                return
-
-            time, frequency, intensity = process_block()
-            plot_spec(time, frequency, intensity)
