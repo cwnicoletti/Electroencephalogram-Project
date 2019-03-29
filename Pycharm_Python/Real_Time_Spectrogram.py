@@ -27,6 +27,7 @@ def get_rms(block):
 def process_block():
     raw_block = AudioInput().get_mic_stream().read(BUFFER_RATE, exception_on_overflow=False)
     stream.close()
+    AudioInput().pa.terminate()
     count = len(raw_block) / 2
     format = '%dh' % count
     snd_block = np.array(struct.unpack(format, raw_block))

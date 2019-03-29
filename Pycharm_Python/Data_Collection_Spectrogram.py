@@ -34,6 +34,7 @@ def process_block():
     time.sleep(.5)
     raw_block = AudioInput().get_mic_stream().read(BUFFER_RATE, exception_on_overflow=False)
     print('End Recording')
+    time.sleep(.5)
     stream.close()
     AudioInput().pa.terminate()
     count = len(raw_block) / 2
