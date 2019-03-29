@@ -32,10 +32,10 @@ def process_block():
     time.sleep(.5)
     print('1...')
     time.sleep(.5)
-    print("THINK")
     raw_block = AudioInput().get_mic_stream().read(BUFFER_RATE, exception_on_overflow=False)
     print('End Recording')
     stream.close()
+    AudioInput().pa.terminate()
     count = len(raw_block) / 2
     format = '%dh' % count
     snd_block = np.array(struct.unpack(format, raw_block))
@@ -107,4 +107,5 @@ class AudioInput(object):
                               input_device_index=device_index,
                               frames_per_buffer=BUFFER_RATE)
 
+        print("THINK")
         return stream
