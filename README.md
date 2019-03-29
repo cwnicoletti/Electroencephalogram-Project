@@ -26,7 +26,7 @@ All contributions should be referenced to the [CONTRIBUTIONS](https://github.com
 * [Minim](http://code.compartmental.net/minim/)
 
 ## Known Bugs
-Currently there is a bug with the python version of this code. The minim library seems to be requiring more than 1 parameter for its fft function calls, as opposed to the Java version, where it only requires 1. There seems to be little to no documentation on the python version of the minim library so its unknown as to what this second parameter requires (another reason why we are changing libraries and IDEs).
+In Real_Time_Spectrogram.py, when pressing the "Close" button, the window reappears again and then terminates. Instead of immediately terminating upon pressing "Close."
 
 ## Licensing
 The content of this repository is licensed under the terms specified in the [LICENSE](https://github.com/cwnicoletti/Electroencephalogram-Project/blob/master/LICENSE) file.
