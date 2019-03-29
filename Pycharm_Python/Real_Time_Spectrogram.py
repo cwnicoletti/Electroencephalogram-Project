@@ -27,11 +27,9 @@ def get_rms(block):
 def listen():
     while True:
         if escape is True:
-            stream.close()
-            AudioInput().pa.terminate()
             return
 
-        time, frequency, intensity = process_block()
+        time, frequency, intensity = AudioInput().process_block()
         plot_spec(time, frequency, intensity)
 
 
@@ -66,7 +64,6 @@ class AudioInput(object):
 
     def get_mic_stream(self):
         device_index = self.find_input_device()
-        print("THINK")
         stream = self.pa.open(format=FORMAT,
                               channels=NUM_CHANNELS,
                               rate=RATE,
