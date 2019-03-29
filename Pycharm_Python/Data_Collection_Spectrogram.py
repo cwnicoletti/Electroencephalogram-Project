@@ -6,6 +6,7 @@ import matplotlib.pyplot as plt
 from Pycharm_Python import Plot_Buttons
 from Pycharm_Python import Low_Pass_Filter
 
+counter = 0
 
 cutoff = 200  # cutoff frequency
 fs = 44100  # sampling frequency
@@ -24,6 +25,7 @@ def get_rms(block):
 
 def process_block():
     import time
+
     print('Starting Recording in...')
     time.sleep(.5)
     print('3...')
@@ -32,11 +34,11 @@ def process_block():
     time.sleep(.5)
     print('1...')
     time.sleep(.5)
-    raw_block = AudioInput().get_mic_stream().read(BUFFER_RATE, exception_on_overflow=False)
+    raw_block = get_mic_stream().read(BUFFER_RATE, exception_on_overflow=False)
     print('End Recording')
     time.sleep(.5)
     stream.close()
-    AudioInput().pa.terminate()
+    pa.terminate()
     count = len(raw_block) / 2
     format = '%dh' % count
     snd_block = np.array(struct.unpack(format, raw_block))
@@ -77,36 +79,39 @@ def listen():
         return
 
 
-class AudioInput(object):
-    def __init__(self):
-        self.pa = pyaudio.PyAudio()
+def get_pyaudio():
+    global pa
+    pa = pyaudio.PyAudio()
+    return pa
 
-    def find_input_device(self):
-        device_index = None
-        for i in range(pyaudio.PyAudio().get_device_count()):
-            device_info = self.pa.get_device_info_by_index(i)
-            print('Device {}: {}'.format(i, device_info['name']))
 
-            for keyword in ['mic']:
-                if keyword in device_info['name'].lower():
-                    print('Found an input: device {} - {}'.format(i, device_info['name']))
-                    device_index = i
-                    return device_index
+def find_input_device():
+    device_index = None
+    for i in range(get_pyaudio().get_device_count()):
+        device_info = pa.get_device_info_by_index(i)
+        print('Device {}: {}'.format(i, device_info['name']))
 
-        if device_index is None:
-            print('No preferred input found. Using default input device.')
+        for keyword in ['mic']:
+            if keyword in device_info['name'].lower():
+                print('Found an input: device {} - {}'.format(i, device_info['name']))
+                device_index = i
+                return device_index
 
-        return device_index
+    if device_index is None:
+        print('No preferred input found. Using default input device.')
 
-    def get_mic_stream(self):
-        device_index = self.find_input_device()
-        global stream
-        stream = self.pa.open(format=FORMAT,
-                              channels=NUM_CHANNELS,
-                              rate=RATE,
-                              input=True,
-                              input_device_index=device_index,
-                              frames_per_buffer=BUFFER_RATE)
+    return device_index
 
-        print("THINK")
-        return stream
+
+def get_mic_stream():
+    device_index = find_input_device()
+    global stream
+    stream = pa.open(format=FORMAT,
+                     channels=NUM_CHANNELS,
+                     rate=RATE,
+                     input=True,
+                     input_device_index=device_index,
+                     frames_per_buffer=BUFFER_RATE)
+
+    print("THINK")
+    return stream
