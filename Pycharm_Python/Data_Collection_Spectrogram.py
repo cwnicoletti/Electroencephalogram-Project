@@ -1,3 +1,4 @@
+import time
 import struct
 import pyaudio
 import numpy as np
@@ -21,45 +22,6 @@ def get_rms(block):
     return np.sqrt(np.mean(np.square(block)))
 
 
-def process_block():
-    import time
-
-    print('Starting Recording in...')
-    time.sleep(.5)
-    print('3...')
-    time.sleep(.5)
-    print('2...')
-    time.sleep(.5)
-    print('1...')
-    time.sleep(.5)
-    raw_block = get_mic_stream().read(BUFFER_RATE, exception_on_overflow=False)
-    print('End Recording')
-    time.sleep(.5)
-    stream.close()
-    pa.terminate()
-    count = len(raw_block) / 2
-    format = '%dh' % count
-    snd_block = np.array(struct.unpack(format, raw_block))
-
-    # nperg=178, noverlap=8: gives 129 x 129 x 129
-    # nperg=64, noverlap=60: gives 5197 x 129 x 129
-    # nperg=64, noverlap=50: gives 1571 x 129 x 129 -- middle-point, will use
-    print('Creating Spectrogram')
-    f, t, sxx = signal.spectrogram(snd_block, RATE, nperseg=64, nfft=256, noverlap=50)
-    print('Finished')
-
-    with np.errstate(divide='raise'):
-        try:
-            decibels = 10 * np.log10(sxx)
-        except FloatingPointError as e:
-            print('Error processing decibels: {}'.format(e))
-            print('Retrying...')
-            return process_block()
-
-    f = Low_Pass_Filter.butter_low_pass_filter(f, cutoff, fs, order)
-    return t, f, decibels
-
-
 def plot_spec(x, y, z):
     print('Plotting Spectrogram...')
     plt.pcolormesh(x, y, z, cmap='inferno')
@@ -77,39 +39,73 @@ def listen():
         return
 
 
-def get_pyaudio():
-    global pa
-    pa = pyaudio.PyAudio()
-    return pa
+class AudioInput(object):
+    def __init__(self):
+        self.pa = pyaudio.PyAudio()
 
+    def find_input_device(self):
+        device_index = None
+        for i in range(self.pa.get_device_count()):
+            device_info = self.pa.get_device_info_by_index(i)
+            print('Device {}: {}'.format(i, device_info['name']))
 
-def find_input_device():
-    device_index = None
-    for i in range(get_pyaudio().get_device_count()):
-        device_info = pa.get_device_info_by_index(i)
-        print('Device {}: {}'.format(i, device_info['name']))
+            for keyword in ['mic']:
+                if keyword in device_info['name'].lower():
+                    print('Found an input: device {} - {}'.format(i, device_info['name']))
+                    device_index = i
+                    return device_index
 
-        for keyword in ['mic']:
-            if keyword in device_info['name'].lower():
-                print('Found an input: device {} - {}'.format(i, device_info['name']))
-                device_index = i
-                return device_index
+        if device_index is None:
+            print('No preferred input found. Using default input device.')
 
-    if device_index is None:
-        print('No preferred input found. Using default input device.')
+        return device_index
 
-    return device_index
+    def get_mic_stream(self):
+        device_index = self.find_input_device()
+        print("THINK")
+        stream = self.pa.open(format=FORMAT,
+                              channels=NUM_CHANNELS,
+                              rate=RATE,
+                              input=True,
+                              input_device_index=device_index,
+                              frames_per_buffer=BUFFER_RATE)
 
+        return stream
 
-def get_mic_stream():
-    device_index = find_input_device()
-    global stream
-    stream = pa.open(format=FORMAT,
-                     channels=NUM_CHANNELS,
-                     rate=RATE,
-                     input=True,
-                     input_device_index=device_index,
-                     frames_per_buffer=BUFFER_RATE)
+    def process_block(self):
 
-    print("THINK")
-    return stream
+        print('Starting Recording in...')
+        time.sleep(.5)
+        print('3...')
+        time.sleep(.5)
+        print('2...')
+        time.sleep(.5)
+        print('1...')
+        time.sleep(.5)
+        stream = self.get_mic_stream()
+        raw_block = stream.read(BUFFER_RATE, exception_on_overflow=False)
+        print('End Recording')
+        time.sleep(.5)
+        self.pa.close(stream)
+        self.pa.terminate()
+        count = len(raw_block) / 2
+        format = '%dh' % count
+        snd_block = np.array(struct.unpack(format, raw_block))
+
+        # nperg=178, noverlap=8: gives 129 x 129 x 129
+        # nperg=64, noverlap=60: gives 5197 x 129 x 129
+        # nperg=64, noverlap=50: gives 1571 x 129 x 129 -- middle-point, will use
+        print('Creating Spectrogram')
+        f, t, sxx = signal.spectrogram(snd_block, RATE, nperseg=64, nfft=256, noverlap=50)
+        print('Finished')
+
+        with np.errstate(divide='raise'):
+            try:
+                decibels = 10 * np.log10(sxx)
+            except FloatingPointError as e:
+                print('Error processing decibels: {}'.format(e))
+                print('Retrying...')
+                return process_block()
+
+        f = Low_Pass_Filter.butter_low_pass_filter(f, cutoff, fs, order)
+        return t, f, decibels

@@ -42,7 +42,7 @@ def closing_funcs(self):
 def recording_funcs(self):
     plt.clf()
     global x, y, z
-    x, y, z = Data_Collection_Spectrogram.process_block()
+    x, y, z = Data_Collection_Spectrogram.AudioInput().process_block()
     Data_Collection_Spectrogram.plot_spec(x, y, z)
 
     plot_but_record()
