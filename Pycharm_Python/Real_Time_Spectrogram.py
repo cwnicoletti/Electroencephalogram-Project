@@ -14,7 +14,7 @@ order = 2  # order of filter
 FORMAT = pyaudio.paInt16
 NUM_CHANNELS = 1
 RATE = 44100
-INPUT_BLOCK_TIME = 0.5
+INPUT_BLOCK_TIME = 0.05
 BUFFER_RATE = int(RATE * INPUT_BLOCK_TIME)
 
 escape = False
@@ -26,19 +26,31 @@ def get_rms(block):
 
 def listen():
     while True:
+        global escape
         if escape is True:
-            return
-
+            plt.ioff()
+            plt.clf()
+            plt.cla()
+            plt.close()
+            break
         time, frequency, intensity = AudioInput().process_block()
         plot_spec(time, frequency, intensity)
+        if escape is True:
+            plt.ioff()
+            plt.clf()
+            plt.cla()
+            plt.close()
+            break
 
 
 def plot_spec(x, y, z):
     global escape
     plt.pcolormesh(x, y, z, cmap='inferno')
-    escape = Plot_Buttons.plot_but_close()
-    plt.pause(0.02)
+    escape = Plot_Buttons.plot_but_close_rts()
+    plt.pause(0.05)
     plt.clf()
+    if escape is True:
+        return escape
 
 
 class AudioInput(object):
@@ -93,7 +105,7 @@ class AudioInput(object):
             except FloatingPointError as e:
                 print('Error processing decibels: {}'.format(e))
                 print('Retrying...')
-                return process_block()
+                return listen()
 
         f = Low_Pass_Filter.butter_low_pass_filter(f, cutoff, fs, order)
         return t, f, decibels

@@ -14,7 +14,7 @@ order = 2  # order of filter
 FORMAT = pyaudio.paInt16
 NUM_CHANNELS = 1
 RATE = 44100
-INPUT_BLOCK_TIME = 0.5
+INPUT_BLOCK_TIME = 0.05
 BUFFER_RATE = int(RATE * INPUT_BLOCK_TIME)
 
 
@@ -105,7 +105,7 @@ class AudioInput(object):
             except FloatingPointError as e:
                 print('Error processing decibels: {}'.format(e))
                 print('Retrying...')
-                return process_block()
+                return Plot_Buttons.recording_funcs()
 
         f = Low_Pass_Filter.butter_low_pass_filter(f, cutoff, fs, order)
         return t, f, decibels

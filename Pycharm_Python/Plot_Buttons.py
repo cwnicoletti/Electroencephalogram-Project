@@ -3,6 +3,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.widgets import Button
 from Pycharm_Python import Data_Collection_Spectrogram
+from Pycharm_Python import Real_Time_Spectrogram
 
 escape = False
 
@@ -22,21 +23,36 @@ def plot_but_save():
 
 
 def plot_but_close():
-    global escape
     axclose = plt.axes([0.81, 0.02, 0.1, 0.075])
     exit_spec = Button(axclose, 'Close')
     exit_spec.on_clicked(closing_funcs)
+    axclose.button = exit_spec
+
+
+def plot_but_close_rts():
+    global escape
+    axclose = plt.axes([0.81, 0.02, 0.1, 0.075])
+    exit_spec = Button(axclose, 'Close')
+    exit_spec.on_clicked(closing_funcs_rts)
     axclose.button = exit_spec
     return escape
 
 
 def closing_funcs(self):
+    plt.ioff()
+    plt.clf()
+    plt.cla()
+    plt.close()
+
+
+def closing_funcs_rts(self):
     global escape
     escape = True
     plt.ioff()
     plt.clf()
     plt.cla()
     plt.close()
+    return escape
 
 
 def recording_funcs(self):
