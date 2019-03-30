@@ -68,7 +68,5 @@ def saving_funcs(self):
         brain_csv = csv.writer(brain_data, delimiter=',', quotechar='"', lineterminator='\n', quoting=csv.QUOTE_MINIMAL)
         brain_csv.writerow(new_row)
     print('...')
-    plot_but_record()
-    plot_but_close()
 
     print('Saved')
