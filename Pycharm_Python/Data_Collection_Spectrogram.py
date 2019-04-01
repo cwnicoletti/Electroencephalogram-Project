@@ -14,7 +14,7 @@ order = 2  # order of filter
 FORMAT = pyaudio.paInt16
 NUM_CHANNELS = 1
 RATE = 44100
-INPUT_BLOCK_TIME = 0.05
+INPUT_BLOCK_TIME = 0.5
 BUFFER_RATE = int(RATE * INPUT_BLOCK_TIME)
 
 

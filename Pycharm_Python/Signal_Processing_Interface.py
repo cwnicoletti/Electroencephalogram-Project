@@ -1,4 +1,3 @@
-from Pycharm_Python import Real_Time_Spectrogram
-
+from Pycharm_Python import Data_Collection_Spectrogram
 if __name__ == '__main__':
-    Real_Time_Spectrogram.listen()
+    Data_Collection_Spectrogram.listen()

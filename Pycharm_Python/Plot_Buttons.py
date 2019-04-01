@@ -3,8 +3,8 @@ import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.widgets import Button
 from Pycharm_Python import Data_Collection_Spectrogram
-from Pycharm_Python import Real_Time_Spectrogram
 
+trial_count = 0
 escape = False
 
 
@@ -68,21 +68,25 @@ def recording_funcs(self):
 
 
 def saving_funcs(self):
+    global trial_count
     print('Saving...')
-    count = 0
+    count = 1
     size = len(x) * len(y)
-    new_row = np.zeros(size)
+    new_row = np.zeros(size+1)
+    new_row[0] = 2
     for i in range(len(y)):
         for j in range(len(x)):
                 new_row[count] = z[i][j]
                 count += 1
-    with open('Training_Data/training_the.csv', 'a+') as brain_data:
+    # 0 - nothing, 1 - hello, 2 - world
+    with open('data/training.csv', 'a+') as brain_data:
         brain_csv = csv.writer(brain_data, delimiter=',', quotechar='"', lineterminator='\n', quoting=csv.QUOTE_MINIMAL)
         brain_csv.writerow(new_row)
     print('...')
-    with open('Test_Data/test.csv', 'a+') as brain_data:
+    with open('data/test.csv', 'a+') as brain_data:
         brain_csv = csv.writer(brain_data, delimiter=',', quotechar='"', lineterminator='\n', quoting=csv.QUOTE_MINIMAL)
         brain_csv.writerow(new_row)
     print('...')
-
+    trial_count += 1
     print('Saved')
+    print("Trial number: ", trial_count)

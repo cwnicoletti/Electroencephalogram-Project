@@ -1,4 +1,3 @@
-import csv
 import struct
 import pyaudio
 import numpy as np
