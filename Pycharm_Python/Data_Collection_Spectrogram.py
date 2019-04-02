@@ -89,8 +89,8 @@ class AudioInput(object):
         self.pa.close(stream)
         self.pa.terminate()
         count = len(raw_block) / 2
-        format = '%dh' % count
-        snd_block = np.array(struct.unpack(format, raw_block))
+        block_format = '%dh' % count
+        snd_block = np.array(struct.unpack(block_format, raw_block))
 
         # nperg=178, noverlap=8: gives 129 x 129 x 129
         # nperg=64, noverlap=60: gives 5197 x 129 x 129
