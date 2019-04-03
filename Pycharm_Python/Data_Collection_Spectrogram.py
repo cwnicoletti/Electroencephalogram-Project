@@ -108,8 +108,10 @@ class AudioInput(object):
             except FloatingPointError as e:
                 print('Error processing decibels: {}'.format(e))
                 print('Retrying...')
-                return Plot_Buttons.recording_funcs()
+                return AudioInput().process_block()
 
         f = Low_Pass_Filter.butter_low_pass_filter(f, cutoff, fs, order)
         return t, f, decibels
 
+    def __del__(self):
+        print("Deleting AudioInput Object")

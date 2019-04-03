@@ -52,6 +52,7 @@ def closing_funcs_rts(self):
     plt.clf()
     plt.cla()
     plt.close()
+    del trial_count
     return escape
 
 
