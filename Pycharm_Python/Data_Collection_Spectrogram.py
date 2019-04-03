@@ -7,9 +7,11 @@ import matplotlib.pyplot as plt
 from Pycharm_Python import Plot_Buttons
 from Pycharm_Python import Low_Pass_Filter
 
-cutoff = 200  # cutoff frequency
-fs = 44100  # sampling frequency
+cutoff = 200.0  # cutoff frequency
+fs = 44100.0  # sampling frequency
 order = 2  # order of filter
+f0 = 60.0  # frequency being removed
+Q = 30.0  # Quality Factor
 
 FORMAT = pyaudio.paInt16
 NUM_CHANNELS = 1
@@ -63,6 +65,7 @@ class AudioInput(object):
     def get_mic_stream(self):
         device_index = self.find_input_device()
         print("THINK")
+
         stream = self.pa.open(format=FORMAT,
                               channels=NUM_CHANNELS,
                               rate=RATE,
@@ -73,7 +76,6 @@ class AudioInput(object):
         return stream
 
     def process_block(self):
-
         print('Starting Recording in...')
         time.sleep(.5)
         print('3...')
@@ -82,6 +84,7 @@ class AudioInput(object):
         time.sleep(.5)
         print('1...')
         time.sleep(.5)
+
         stream = self.get_mic_stream()
         raw_block = stream.read(BUFFER_RATE, exception_on_overflow=False)
         print('End Recording')
@@ -109,3 +112,4 @@ class AudioInput(object):
 
         f = Low_Pass_Filter.butter_low_pass_filter(f, cutoff, fs, order)
         return t, f, decibels
+
