@@ -29,7 +29,7 @@ def plot_but_close():
     axes_close.button = close_spec
 
 
-def closing_funcs():
+def closing_funcs(self):
     plt.ioff()
     plt.clf()
     plt.cla()
