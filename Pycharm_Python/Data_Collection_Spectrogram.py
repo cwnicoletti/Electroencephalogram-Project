@@ -27,13 +27,15 @@ def get_rms(block):
 def plot_spec(x, y, z):
     print('Plotting Spectrogram...')
     plt.pcolormesh(x, y, z, cmap='inferno')
-    print('Finished')
+    print('Finished Plotting')
 
 
 def listen():
     try:
         Plot_Buttons.plot_but_record()
         Plot_Buttons.plot_but_close()
+        fig = plt.figure(1)
+        fig.canvas.set_window_title('Brain-Wave Spectrogram')
         plt.show()
 
     except Exception as e:
@@ -100,7 +102,7 @@ class AudioInput(object):
         # nperg=64, noverlap=50: gives 1571 x 129 x 129 -- middle-point, will use
         print('Creating Spectrogram')
         f, t, sxx = signal.spectrogram(snd_block, RATE, nperseg=64, nfft=256, noverlap=50)
-        print('Finished')
+        print('Finished Creating')
 
         with np.errstate(divide='raise'):
             try:
