@@ -1,8 +1,9 @@
-import csv
 import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.widgets import Button
+from multiprocessing import Process
 from Pycharm_Python import Data_Collection_Spectrogram
+from Pycharm_Python import Write_Files
 
 escape = False
 trial_count = 0
@@ -77,17 +78,20 @@ def saving_funcs(self):
     csv_spec[0] = 0
     for i in range(len(y)):
         for j in range(len(x)):
-                csv_spec[count] = z[i][j]
-                count += 1
+            csv_spec[count] = z[i][j]
+            count += 1
+
     # 0 - nothing, 1 - hello, 2 - world
-    with open('data/train.csv', 'a+') as brain_data_train:
-        brain_csv = csv.writer(brain_data_train, delimiter=',', quotechar='"', lineterminator='\n', quoting=csv.QUOTE_MINIMAL)
-        brain_csv.writerow(csv_spec)
+    p1 = Process(target=Write_Files.write_train, args=(csv_spec,))
     print('...')
-    with open('data/test.csv', 'a+') as brain_data_test:
-        brain_csv = csv.writer(brain_data_test, delimiter=',', quotechar='"', lineterminator='\n', quoting=csv.QUOTE_MINIMAL)
-        brain_csv.writerow(csv_spec)
+    p2 = Process(target=Write_Files.write_test, args=(csv_spec,))
     print('...')
+
+    p1.start()
+    p2.start()
+
+    p1.join()
+    p2.join()
     trial_count += 1
     print('Saved')
     print("Trial number: ", trial_count)

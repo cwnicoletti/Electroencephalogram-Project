@@ -7,7 +7,7 @@ import matplotlib.pyplot as plt
 from Pycharm_Python import Plot_Buttons
 from Pycharm_Python import Low_Pass_Filter
 
-cutoff = 200.0  # cutoff frequency
+cutoff = 30.0  # cutoff frequency
 fs = 44100.0  # sampling frequency
 order = 2  # order of filter
 f0 = 60.0  # frequency being removed
@@ -67,7 +67,6 @@ class AudioInput(object):
     def get_mic_stream(self):
         device_index = self.find_input_device()
         print("THINK")
-
         stream = self.pa.open(format=FORMAT,
                               channels=NUM_CHANNELS,
                               rate=RATE,
