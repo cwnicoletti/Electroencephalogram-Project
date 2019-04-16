@@ -8,6 +8,10 @@ from Pycharm_Python import Write_Files
 escape = False
 trial_count = 0
 
+'''
+Here we have a list of button plotting functions for the different buttons
+When adding new buttons, it should be as easy as copy-pasting and manipulating some values
+'''
 
 def plot_but_record():
     axes_record = plt.axes([0.1, 0.02, 0.1, 0.075])
@@ -30,13 +34,6 @@ def plot_but_close():
     axes_close.button = close_spec
 
 
-def closing_funcs(self):
-    plt.ioff()
-    plt.clf()
-    plt.cla()
-    plt.close()
-
-
 def plot_but_close_rts():
     global escape
     axes_close = plt.axes([0.81, 0.02, 0.1, 0.075])
@@ -44,6 +41,22 @@ def plot_but_close_rts():
     close_rts_spec.on_clicked(closing_funcs_rts)
     axes_close.button = close_rts_spec
     return escape
+
+# End button plotting
+
+
+'''
+Here we have the button functions, which is basically the scripts that activate on-click
+Note: There are two different closing functions: 
+    One for Data_Collection_Spectrogram and one for Real_Time_Spectrogram (rts)
+'''
+
+
+def closing_funcs(self):
+    plt.ioff()
+    plt.clf()
+    plt.cla()
+    plt.close()
 
 
 def closing_funcs_rts(self):
@@ -94,13 +107,13 @@ def saving_funcs(self):
     2 - thinking the word "world"
     '''
 
-    csv_spec[0] = 0
+    csv_spec[0] = 0  # First column - label
     for i in range(len(y)):
         for j in range(len(x)):
             csv_spec[count] = z[i][j]  # Populating csv rows by concatenating spectrogram pixel rows
             count += 1
     
-    # Start multiprocessing to utilize multiple cores for faster writing
+    # Start multiprocessing to utilize multiple cores for faster (parallel) writing
     p1 = Process(target=Write_Files.write_train, args=(csv_spec,))
     print('...')
     p2 = Process(target=Write_Files.write_test, args=(csv_spec,))

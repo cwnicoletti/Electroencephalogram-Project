@@ -7,12 +7,12 @@ import matplotlib.pyplot as plt
 from Pycharm_Python import Plot_Buttons
 from Pycharm_Python import Low_Pass_Filter
 
+# Variables for the low-pass filter
 cutoff = 30.0  # cutoff frequency
 fs = 44100.0  # sampling frequency
 order = 2  # order of filter
-f0 = 60.0  # frequency being removed
-Q = 30.0  # Quality Factor
 
+# Variables for the PyAudio stream (see: get_mic_stream)
 FORMAT = pyaudio.paInt16
 NUM_CHANNELS = 1
 RATE = 44100
@@ -26,10 +26,14 @@ def get_rms(block):
 
 def plot_spec(x, y, z):
     print('Plotting Spectrogram...')
-    plt.pcolormesh(x, y, z, cmap='inferno')
+    plt.pcolormesh(x, y, z, cmap='inferno')  # Plots x, y, z as a spectrogram in the color 'inferno'
     print('Finished Plotting')
 
 
+'''
+This is the first function called in the program
+It simply opens a window with two buttons plotted
+'''
 def listen():
     try:
         Plot_Buttons.plot_but_record()
@@ -43,10 +47,16 @@ def listen():
         return
 
 
+'''
+AudioInput is a class that holds the object "AudioInput"
+It's here to share a local variable between the functions self.pa
+This allows the program to only open PyAudio once (instead of every time it's called)
+'''
 class AudioInput(object):
     def __init__(self):
         self.pa = pyaudio.PyAudio()
 
+    # Function simply finds the default audio device to use
     def find_input_device(self):
         device_index = None
         for i in range(self.pa.get_device_count()):
@@ -87,11 +97,12 @@ class AudioInput(object):
         time.sleep(.5)
 
         stream = self.get_mic_stream()
-        raw_block = stream.read(BUFFER_RATE, exception_on_overflow=False)
+        raw_block = stream.read(BUFFER_RATE, exception_on_overflow=False)  # Reads in 500ms of audio
         print('End Recording')
         time.sleep(.5)
         self.pa.close(stream)
         self.pa.terminate()
+
         count = len(raw_block) / 2
         block_format = '%dh' % count
         snd_block = np.array(struct.unpack(block_format, raw_block))
@@ -103,6 +114,8 @@ class AudioInput(object):
         f, t, sxx = signal.spectrogram(snd_block, RATE, nperseg=64, nfft=256, noverlap=50)
         print('Finished Creating')
 
+        # We'll be working with decibels since this program functions similarly to voice recognition
+        # Hint: Human hearing works logarithmically (Reason for: np.log10)
         with np.errstate(divide='raise'):
             try:
                 decibels = 10 * np.log10(sxx)
@@ -111,8 +124,9 @@ class AudioInput(object):
                 print('Retrying...')
                 return AudioInput().process_block()
 
-        f = Low_Pass_Filter.butter_low_pass_filter(f, cutoff, fs, order)
+        f = Low_Pass_Filter.butter_low_pass_filter(f, cutoff, fs, order)  # Low pass filter
         return t, f, decibels
 
+    # Deletes AudioInput object manually, since program only terminates once "Close"d
     def __del__(self):
         print("Deleting AudioInput Object")
