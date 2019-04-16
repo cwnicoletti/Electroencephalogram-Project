@@ -58,11 +58,20 @@ def closing_funcs_rts(self):
 
 
 def recording_funcs(self):
-    plt.clf()
+    plt.clf()  # Quick clear function just in case
     global x, y, z
+
+    '''
+    Once "Record" is hit, this starts the processing pipeline
+    Data_collection_Spectrogram -> process_block -> get_mic_stream -> find_input_device /
+    -> continue process_block to return f, t, decibels (or x, y, z)
+    '''
     x, y, z = Data_Collection_Spectrogram.AudioInput().process_block()
+
+    # Simply calling plotting function in Data_Collection_Spectrogram
     Data_Collection_Spectrogram.plot_spec(x, y, z)
 
+    # Re-plot buttons each trial
     plot_but_record()
     plot_but_save()
     plot_but_close()
@@ -71,17 +80,27 @@ def recording_funcs(self):
 
 def saving_funcs(self):
     global trial_count
+
     print('Saving...')
-    count = 1
+
+    count = 1  # Start at index [1] since [0] is label column
     size = len(x) * len(y)
     csv_spec = np.zeros(size+1)
+
+    ''' 
+    These are the different labels of spectrogram types
+    0 - nothing; random thoughts
+    1 - thinking the word "hello"
+    2 - thinking the word "world"
+    '''
+
     csv_spec[0] = 0
     for i in range(len(y)):
         for j in range(len(x)):
-            csv_spec[count] = z[i][j]
+            csv_spec[count] = z[i][j]  # Populating csv rows by concatenating spectrogram pixel rows
             count += 1
-
-    # 0 - nothing, 1 - hello, 2 - world
+    
+    # Start multiprocessing to utilize multiple cores for faster writing
     p1 = Process(target=Write_Files.write_train, args=(csv_spec,))
     print('...')
     p2 = Process(target=Write_Files.write_test, args=(csv_spec,))
@@ -92,6 +111,9 @@ def saving_funcs(self):
 
     p1.join()
     p2.join()
+    
+    # End multiprocessing
+    
     trial_count += 1
     print('Saved')
     print("Trial number: ", trial_count)
