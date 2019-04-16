@@ -13,10 +13,10 @@ fs = 44100.0  # sampling frequency
 order = 2  # order of filter
 
 # Variables for the PyAudio stream (see: get_mic_stream)
-FORMAT = pyaudio.paInt16
-NUM_CHANNELS = 1
-RATE = 44100
-INPUT_BLOCK_TIME = 0.5
+FORMAT = pyaudio.paInt16  # 16-bit depth
+NUM_CHANNELS = 1  # Number of channels (we're just using one)
+RATE = 44100  # Sample rate
+INPUT_BLOCK_TIME = 0.5  # 500ms blocks
 BUFFER_RATE = int(RATE * INPUT_BLOCK_TIME)
 
 
