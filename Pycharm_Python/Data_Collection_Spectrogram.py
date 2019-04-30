@@ -6,6 +6,7 @@ from scipy import signal
 import matplotlib.pyplot as plt
 from Pycharm_Python import Plot_Buttons
 from Pycharm_Python import Low_Pass_Filter
+from Pycharm_Python import Instructions_Page
 
 # Variables for the low-pass filter
 cutoff = 30.0  # cutoff frequency
@@ -31,15 +32,27 @@ def plot_spec(x, y, z):
 
 
 '''
+shows instructions page
+'''
+def show_instructions():
+    Instructions_Page.plot_but_instructions()
+    Instructions_Page.plot_but_next()
+    fig = plt.figure(1)
+    fig.canvas.set_window_title('Instructions')
+    plt.show()
+    fig.canvas.set_window_title('Brain-Wave Spectrogram')
+
+
+'''
 This is the first function called in the program
 It simply opens a window with two buttons plotted
 '''
 def listen():
     try:
+        show_instructions()
+        plt.clf()
         Plot_Buttons.plot_but_record()
         Plot_Buttons.plot_but_close()
-        fig = plt.figure(1)
-        fig.canvas.set_window_title('Brain-Wave Spectrogram')
         plt.show()
 
     except Exception as e:
