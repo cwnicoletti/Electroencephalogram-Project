@@ -13,7 +13,7 @@ order = 2  # order of filter
 FORMAT = pyaudio.paInt16
 NUM_CHANNELS = 1
 RATE = 44100
-INPUT_BLOCK_TIME = 0.05
+INPUT_BLOCK_TIME = 0.5
 BUFFER_RATE = int(RATE * INPUT_BLOCK_TIME)
 
 escape = False
@@ -25,13 +25,6 @@ def get_rms(block):
 
 def listen():
     while True:
-        global escape
-        if escape is True:
-            plt.ioff()
-            plt.clf()
-            plt.cla()
-            plt.close()
-            break
         time, frequency, intensity = AudioInput().process_block()
         plot_spec(time, frequency, intensity)
         if escape is True:
@@ -40,16 +33,21 @@ def listen():
             plt.cla()
             plt.close()
             break
-
+def escape():
+    global escape
+    plt.ioff()
+    plt.clf()
+    plt.cla()
+    plt.close()
 
 def plot_spec(x, y, z):
     global escape
+    if escape is True:
+        return escape
     plt.pcolormesh(x, y, z, cmap='inferno')
     escape = Plot_Buttons.plot_but_close_rts()
     plt.pause(0.05)
     plt.clf()
-    if escape is True:
-        return escape
 
 
 class AudioInput(object):
@@ -87,7 +85,8 @@ class AudioInput(object):
     def process_block(self):
         stream = self.get_mic_stream()
         raw_block = stream.read(BUFFER_RATE, exception_on_overflow=False)
-        self.pa.close(stream)
+        stream.stop_stream()
+        stream.close()
         self.pa.terminate()
         count = len(raw_block) / 2
         format = '%dh' % count

@@ -6,11 +6,18 @@ from scipy import signal
 import matplotlib.pyplot as plt
 from Pycharm_Python import Plot_Buttons
 from Pycharm_Python import Low_Pass_Filter
+from Pycharm_Python import High_Pass_Filter
 
-# Variables for the low-pass filter
-cutoff = 30.0  # cutoff frequency
+# Variables for the filters
+first_low_cutoff = 60.0  # first low-pass cutoff frequency
+second_low_cutoff = 31.0  # second low-pass cutoff frequency
+first_high_cutoff = 4.0  # first high-pass cutoff frequency
 fs = 44100.0  # sampling frequency
-order = 2  # order of filter
+order = 1  # order of filter
+alpha_low = 8
+alpha_high = 15
+beta_low = 16
+beta_high = 31
 
 # Variables for the PyAudio stream (see: get_mic_stream)
 FORMAT = pyaudio.paInt16  # 16-bit depth
@@ -27,6 +34,8 @@ def get_rms(block):
 def plot_spec(x, y, z):
     print('Plotting Spectrogram...')
     plt.pcolormesh(x, y, z, cmap='inferno')  # Plots x, y, z as a spectrogram in the color 'inferno'
+    plt.ylabel('Frequency [Hz]')
+    plt.xlabel('Time [sec]')
     print('Finished Plotting')
 
 
@@ -100,18 +109,24 @@ class AudioInput(object):
         raw_block = stream.read(BUFFER_RATE, exception_on_overflow=False)  # Reads in 500ms of audio
         print('End Recording')
         time.sleep(.5)
-        self.pa.close(stream)
+        stream.stop_stream()
+        stream.close()
         self.pa.terminate()
 
         count = len(raw_block) / 2
         block_format = '%dh' % count
         snd_block = np.array(struct.unpack(block_format, raw_block))
+        snd_block = Low_Pass_Filter.butter_low_pass_filter(snd_block, second_low_cutoff, fs, order)
+        snd_block = High_Pass_Filter.butter_high_pass_filter(snd_block, first_high_cutoff, fs, order)
 
         # nperg=178, noverlap=8: gives 129 x 129 x 129
         # nperg=64, noverlap=60: gives 5197 x 129 x 129
         # nperg=64, noverlap=50: gives 1571 x 129 x 129 -- middle-point, will use
         print('Creating Spectrogram')
-        f, t, sxx = signal.spectrogram(snd_block, RATE, nperseg=64, nfft=256, noverlap=50)
+        f, t, sxx = signal.spectrogram(snd_block, RATE, nperseg=64, noverlap=50, nfft=256)
+        print(len(f))
+        print(len(t))
+        print(len(sxx))
         print('Finished Creating')
 
         # We'll be working with decibels since this program functions similarly to voice recognition
@@ -124,7 +139,10 @@ class AudioInput(object):
                 print('Retrying...')
                 return AudioInput().process_block()
 
-        f = Low_Pass_Filter.butter_low_pass_filter(f, cutoff, fs, order)  # Low pass filter
+        f = Low_Pass_Filter.butter_low_pass_filter(f, second_low_cutoff, fs, order)
+        f = High_Pass_Filter.butter_high_pass_filter(f, first_high_cutoff, fs, order)
+
+        print("Frequency[1]: ", f[1])
         return t, f, decibels
 
     # Deletes AudioInput object manually, since program only terminates once "Close"d
