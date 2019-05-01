@@ -4,7 +4,7 @@ import numpy as np
 from scipy import signal
 import matplotlib.pyplot as plt
 from Pycharm_Python import Plot_Buttons
-from Pycharm_Python import Low_Pass_Filter
+from Pycharm_Python.Filters import Low_Pass_Filter
 
 cutoff = 200  # cutoff frequency
 fs = 44100  # sampling frequency
