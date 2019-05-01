@@ -1,28 +1,16 @@
-
-import numpy as np
 import matplotlib.pyplot as plt
-from matplotlib.widgets import Button
-from Pycharm_Python import Data_Collection_Spectrogram
 
-escape = False
-trial_count = 0
 
-'''
-Here we have a list of button plotting functions for the different buttons
-When adding new buttons, it should be as easy as copy-pasting and manipulating some values
-'''
-
-def plot_but_instructions():
-    axes_instr = plt.axes([0.01, 0.55, 0.85, 0.4])
-    words =  'Instructions \n' 'Electrodes: Electrodes should remain placed on the scalp as instructed by our '\
-        'assistants.\n  If the electrodes fall off, simply raise your hand and an assistant will come to help you \n' \
+def plot_instructions():
+    words =  'Instructions: \n\n' 'Electrodes: Electrodes should remain placed on the scalp as instructed by our '\
+        'assistants.\n  If the electrodes fall off, simply raise your hand and an assistant will come to\n help you' \
         'put them back on.\n Circuit board: Please do not touch the circuit board! Touching or pulling out' \
              ' components ' \
-        '\ncan lead to shorting the circuit, and/or may cause harm. \n Recording: \n'\
+        '\ncan lead to shorting the circuit, and/or may cause harm. \n\n Recording: \n'\
         '   Words will be displayed above the spectrogram as well as how many words are left to record. This will be ' \
              'the word you will be “saying” in your head.  \n'\
         'The best method for “saying” the word in your head is by consciously not moving your vocal cords when' \
-             ' “saying” it.' \
+             ' “saying” it. \n' \
         'There is an audio/speaker button next to the word, please press this speaker for every word to clarify ' \
              'how the ' \
         'word is said and with what accent (i.e. different ways of saying “the” or “caramel”)  \n'\
@@ -40,19 +28,6 @@ def plot_but_instructions():
         '\n\n'\
         'There is an option to speed up/slow down the countdown, feel free to adjust this to your comfort.\n' \
         'Any questions/concerns raise your hand, and an assistant will be more than happy to help <[:~)  '
-    instr_spec = Button(axes_instr, words)
-    axes_instr.button = instr_spec
-
-
-'''
-Now make button disappear once clicked, or disappear once next button is clicked.
-'''
-def plot_but_next():
-    axes_next = plt.axes([0.352, 0.02, 0.1, 0.075])
-    next_spec = Button(axes_next, 'Next')
-    next_spec.on_clicked(next_funcs)
-    axes_next.button = next_spec
-
-
-def next_funcs(self):
-    Data_Collection_Spectrogram.listen()
+    plot_words = plt.text(.02, .01, words, fontsize=9, wrap=True)
+    plot_words.axes.get_xaxis().set_visible(False)
+    plot_words.axes.get_yaxis().set_visible(False)
