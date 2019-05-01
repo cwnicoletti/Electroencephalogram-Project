@@ -2,7 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.widgets import Button
 from multiprocessing import Process
-from Pycharm_Python import Data_Collection_Spectrogram
+from Pycharm_Python import Spectrogram_Data_Collection
 from Pycharm_Python import Write_Files
 
 escape = False
@@ -77,7 +77,7 @@ def closing_funcs_rts(self):
 
 
 def next_funcs(self):
-    Data_Collection_Spectrogram.show_recording_ui()
+    Spectrogram_Data_Collection.show_recording_ui()
 
 
 def recording_funcs(self):
@@ -89,10 +89,10 @@ def recording_funcs(self):
     Data_collection_Spectrogram -> process_block -> get_mic_stream -> find_input_device /
     -> continue process_block to return f, t, decibels (or x, y, z)
     '''
-    x, y, z = Data_Collection_Spectrogram.AudioInput().process_block()
+    x, y, z = Spectrogram_Data_Collection.AudioInput().process_block()
 
     # Simply calling plotting function in Data_Collection_Spectrogram
-    Data_Collection_Spectrogram.plot_spec(x, y, z)
+    Spectrogram_Data_Collection.plot_spec(x, y, z)
 
     # Re-plot buttons each trial
     plot_but_record()

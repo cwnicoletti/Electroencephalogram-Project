@@ -1,4 +1,4 @@
-from Pycharm_Python import Data_Collection_Spectrogram
+from Pycharm_Python import Spectrogram_Data_Collection
 
 if __name__ == '__main__':
-    Data_Collection_Spectrogram.show_instructions()
+    Spectrogram_Data_Collection.show_instructions()
