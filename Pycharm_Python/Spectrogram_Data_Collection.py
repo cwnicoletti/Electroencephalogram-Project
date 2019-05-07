@@ -58,6 +58,7 @@ def show_instructions():
     plt.clf()
     Dialogue.plot_instructions()
     Plot_Buttons.plot_but_next()
+    Plot_Buttons.plot_but_prev()
     fig = plt.figure(1)
     fig.set_size_inches(7, 7, 10)
     fig.canvas.set_window_title('Instructions')

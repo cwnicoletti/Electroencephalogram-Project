@@ -25,6 +25,11 @@ def plot_but_next():
     next_spec.on_clicked(next_funcs)
     axes_next.button = next_spec
 
+def plot_but_prev():
+    axes_prev = plt.axes([0.1, 0.02, 0.1, 0.075])
+    prev_spec = Button(axes_prev, 'Previous')
+    prev_spec.on_clicked(prev_funcs)
+    axes_prev.button = prev_spec
 
 def plot_but_record():
     axes_record = plt.axes([0.1, 0.02, 0.1, 0.075])
@@ -88,6 +93,8 @@ def intro_next_funcs(self):
 def next_funcs(self):
     Spectrogram_Data_Collection.show_recording_ui()
 
+def prev_funcs(self):
+    Spectrogram_Data_Collection.show_introduction()
 
 def recording_funcs(self):
     plt.clf()  # Quick clear function just in case
