@@ -12,6 +12,13 @@ trial_count = 0
 Here we have a list of button plotting functions for the different buttons
 When adding new buttons, it should be as easy as copy-pasting and manipulating some values
 '''
+
+def plot_but_intro_next():
+    axes_intro_next = plt.axes([0.81, 0.02, 0.1, 0.075])
+    intro_next_spec = Button(axes_intro_next, 'Next')
+    intro_next_spec.on_clicked(intro_next_funcs)
+    axes_intro_next.button = intro_next_spec
+
 def plot_but_next():
     axes_next = plt.axes([0.81, 0.02, 0.1, 0.075])
     next_spec = Button(axes_next, 'Next')
@@ -75,6 +82,8 @@ def closing_funcs_rts(self):
     del trial_count
     return escape
 
+def intro_next_funcs(self):
+    Spectrogram_Data_Collection.show_instructions()
 
 def next_funcs(self):
     Spectrogram_Data_Collection.show_recording_ui()

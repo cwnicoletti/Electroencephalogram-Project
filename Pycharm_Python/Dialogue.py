@@ -1,5 +1,22 @@
 import matplotlib.pyplot as plt
 
+def plot_introduction():
+    words = 'Welcome to the Brain-to-Computer Interfacing Project \n\n' \
+            'Goal of this event: To gather data from our peers to ' \
+            'create a database of \n “labeled” brain signals. ' \
+            'From this database, we plan on' \
+            ' implementing a machine \n learning algorithm that classifies data based off these labels.\n\n' \
+            'Goal of the project: This project was started to create a device that classifies \n brain ' \
+            'signals using machine learning. From this device we plan on allowing \n individuals to ' \
+            'communicate through these classified signals. \n\n' \
+            'Conclusion: Through your help, we hope to create a non-invasive form of telepathy.\n\n' \
+            'If you’re interested in the details of this device, feel free to talk to someone\n in a white lab coat! \n\n' \
+            'We would also like to note, that you may leave this study at any time.'
+
+    plot_words = plt.text(.02, .5, words, fontsize=9, wrap=True)
+    plot_words.axes.get_xaxis().set_visible(False)
+    plot_words.axes.get_yaxis().set_visible(False)
+
 
 def plot_instructions():
     words =  'Instructions: \n\n' 'Electrodes: Electrodes should remain placed on the scalp as instructed by our '\

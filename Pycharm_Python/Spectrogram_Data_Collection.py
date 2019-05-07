@@ -38,6 +38,18 @@ def plot_spec(x, y, z):
     plt.xlabel('Time [sec]')
     print('Finished Plotting')
 
+'''
+introduction page
+'''
+
+def show_introduction():
+    plt.clf()
+    Dialogue.plot_introduction()
+    Plot_Buttons.plot_but_intro_next()
+    fig = plt.figure(1)
+    fig.set_size_inches(7, 7, 10)
+    fig.canvas.set_window_title('Introduction')
+    plt.show()
 
 '''
 shows instructions page
