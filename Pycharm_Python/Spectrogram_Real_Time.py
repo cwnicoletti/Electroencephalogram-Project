@@ -5,8 +5,8 @@ import pyaudio
 import numpy as np
 from scipy import signal
 import matplotlib.pyplot as plt
-from Pycharm_Python import Plot_Buttons
-from Pycharm_Python.Filters import Low_Pass_Filter, High_Pass_Filter
+import Plot_Buttons
+from Filters import Low_Pass_Filter, High_Pass_Filter
 
 # Variables for the filters
 first_low_cutoff = 30.0  # first low-pass cutoff frequency

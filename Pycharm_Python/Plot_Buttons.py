@@ -2,8 +2,8 @@ import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.widgets import Button
 from multiprocessing import Process
-from Pycharm_Python import Spectrogram_Data_Collection
-from Pycharm_Python import Write_Files
+import Spectrogram_Data_Collection
+import Write_Files
 
 escape = False
 trial_count = 0
