@@ -53,6 +53,8 @@ def listen():
         0 - nothing; random thoughts
         1 - thinking the word "hello"
         2 - thinking the word "world"
+        3 - thinking the word "yes"
+        4 - thinking the word "no"
         '''
 
         csv_spec[0] = 1  # First column - label
@@ -61,15 +63,18 @@ def listen():
                 csv_spec[column_count] = z[row][column]  # Populating csv rows by concatenating spectrogram pixel rows
                 column_count += 1
 
+        print('...')
         with open('data/train.csv', 'a+') as brain_data_train:
             brain_csv = csv.writer(brain_data_train, delimiter=',', quotechar='"', lineterminator='\n',
                                    quoting=csv.QUOTE_MINIMAL)
             brain_csv.writerow(csv_spec)
-        print('...')
+
+        """
         with open('data/test.csv', 'a+') as brain_data_test:
             brain_csv = csv.writer(brain_data_test, delimiter=',', quotechar='"', lineterminator='\n',
                                    quoting=csv.QUOTE_MINIMAL)
             brain_csv.writerow(csv_spec)
+        """
 
         trial_count += 1
         print('Saved')
@@ -80,7 +85,7 @@ def plot_spec(x, y, z):
     escape = Plot_Buttons.plot_but_close_rts()
     if escape is True:
         return escape
-    plt.pause(0.01)
+    plt.pause(0.00001)
     plt.clf()
 
 
