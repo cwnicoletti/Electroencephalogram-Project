@@ -1,6 +1,6 @@
 # Electroencephalogram-Project
 
-![alt text](https://lh3.googleusercontent.com/vJt_prfajhcZwbIBRWYgrCAR37ME3iHtKQ7ghawEkchsN7p3IyKfNvCe0BjadzJpMkhrvYhR0L69malBdM1EXhegm_TZPvPngJcCE9IF)
+![EEG Breadboard](https://res.cloudinary.com/personaluse1234/image/upload/v1617216611/eegbreadboard_lnqsya.png)
 
 This project is based around the construction and modifcation of an instructables DIY electroencephalogram aimed at providing communication via neural firing patterns using current AI strategies. The foundation of this project lies at https://www.instructables.com/id/DIY-EEG-and-ECG-Circuit/. Here you will find every aspect as to how to create the EEG yourself, and will help with understanding every aspect of the foundation of this project as well.
 
